@@ -44,7 +44,7 @@ namespace ft {
 			 * 
 			 * @param alloc 
 			 */
-			explicit vector (const allocator_type& alloc = allocator_type(void)) : _capacity(0), _total(0)
+			explicit vector (const allocator_type& alloc = allocator_type()) : _capacity(0), _total(0)
 			{
 				std::cout << "DEFAULT CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
@@ -58,8 +58,8 @@ namespace ft {
 			 * @param val 
 			 * @param alloc 
 			 */
-			vector (size_type n, const value_type& val = value_type(void),
-					const allocator_type& alloc = allocator_type(void)) : _capacity(n), _total(0)
+			vector (size_type n, const value_type& val = value_type(),
+					const allocator_type& alloc = allocator_type()) : _capacity(n), _total(0)
 			{
 				std::cout << "FILL CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
@@ -83,7 +83,7 @@ namespace ft {
 			 */
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type(void),
+					const allocator_type& alloc = allocator_type(),
 					std::enable_if< std::is_integral<value_type>::value, value_type >* = nullptr)
 					: _capacity(0), _total(0)
 			{
@@ -212,7 +212,7 @@ namespace ft {
 
 			size_type max_size(void) const;
 
-			void resize (size_type n, value_type val = value_type(void));
+			void resize (size_type n, value_type val = value_type());
 
 			size_type capacity(void) const
 			{
