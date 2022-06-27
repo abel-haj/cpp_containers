@@ -44,7 +44,7 @@ namespace ft {
 			 * 
 			 * @param alloc 
 			 */
-			explicit vector (const allocator_type& alloc = allocator_type()) : _capacity(0), _total(0)
+			explicit vector (const allocator_type& alloc = allocator_type(void)) : _capacity(0), _total(0)
 			{
 				std::cout << "DEFAULT CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
@@ -58,8 +58,8 @@ namespace ft {
 			 * @param val 
 			 * @param alloc 
 			 */
-			vector (size_type n, const value_type& val = value_type(),
-					const allocator_type& alloc = allocator_type()) : _capacity(n), _total(0)
+			vector (size_type n, const value_type& val = value_type(void),
+					const allocator_type& alloc = allocator_type(void)) : _capacity(n), _total(0)
 			{
 				std::cout << "FILL CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
@@ -83,7 +83,7 @@ namespace ft {
 			 */
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type(),
+					const allocator_type& alloc = allocator_type(void),
 					std::enable_if< std::is_integral<value_type>::value, value_type >* = nullptr)
 					: _capacity(0), _total(0)
 			{
@@ -176,11 +176,21 @@ namespace ft {
 
 			//						ITERATORS						//
 			//														//
-				  iterator begin()
-			{
-				return
-			}
-			const_iterator begin() const;
+			// BEGIN
+			      iterator begin(void);
+			const_iterator begin(void) const;
+
+			// END
+			      iterator end(void);
+			const_iterator end(void) const;
+
+			// RBEGIN
+			      reverse_iterator rbegin(void);
+			const_reverse_iterator rbegin(void) const;
+
+			// REND
+			      reverse_iterator rend(void);
+			const_reverse_iterator rend(void) const;
 			//														//
 			//						ITERATORS						//
 
@@ -192,10 +202,18 @@ namespace ft {
 				return _total;
 			}
 
+			size_type max_size(void) const;
+
+			void resize (size_type n, value_type val = value_type(void));
+
 			size_type capacity(void) const
 			{
 				return _capacity;
 			}
+
+			bool empty(void) const;
+
+			void reserve (size_type n);
 			//														//
 			//						CAPACITY						//
 
@@ -207,13 +225,52 @@ namespace ft {
 				std::cout << "ACCESSING INDEX " << n << std::endl;
 				return _vec[n];
 			}
+
 			const_reference operator[] (size_type n) const
 			{
 				std::cout << "ACCESSING INDEX " << n << "(const)" << std::endl;
 				return _vec[n];
 			}
+
+			      reference at (size_type n);
+			const_reference at (size_type n) const;
+
+			      reference front(void);
+			const_reference front(void) const;
+
+			      reference back(void);
+			const_reference back(void) const;
 			//													//
 			//					ELEMENT ACCESS					//
+
+			//					MODIFIERS					//
+			//												//
+			// range (1)
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last);
+			// fill (2)
+			void assign (size_type n, const value_type& val);
+
+			void push_back (const value_type& val);
+
+			void pop_back(void);
+
+			// single element (1)
+			iterator insert (iterator position, const value_type& val);
+			// fill (2)
+				void insert (iterator position, size_type n, const value_type& val);
+			// range (3)
+			template <class InputIterator>
+				void insert (iterator position, InputIterator first, InputIterator last);
+
+			iterator erase (iterator position);
+			iterator erase (iterator first, iterator last);
+
+			void swap (vector& x);
+
+			void clear(void);
+			//												//
+			//					MODIFIERS					//
 
 	};
 
