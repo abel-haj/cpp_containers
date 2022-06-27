@@ -24,8 +24,8 @@ namespace ft {
 			typedef	const	value_type						const_reference; // allocator_type::const_reference
 			typedef			value_type	*					pointer; // allocator_type::pointer
 			typedef	const	value_type	*					const_pointer; // allocator_type::const_pointer
-			typedef			random_iterator<value_type>		iterator; // a random access iterator to value_type	convertible to const_iterator
-			typedef			std::vector<value_type>::const_iterator							const_iterator; // a random access iterator to const value_type
+			typedef			ft::random_iterator<value_type>		iterator; // a random access iterator to value_type	convertible to const_iterator
+			typedef			typename std::vector<value_type>::const_iterator							const_iterator; // a random access iterator to const value_type
 			// typedef										reverse_iterator; // reverse_iterator<iterator>
 			// typedef										const_reverse_iterator; // reverse_iterator<const_iterator>
 			typedef			ptrdiff_t						difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type
@@ -193,12 +193,12 @@ namespace ft {
 			const_iterator end(void) const;
 
 			// RBEGIN
-			      reverse_iterator rbegin(void);
-			const_reverse_iterator rbegin(void) const;
+			//       reverse_iterator rbegin(void);
+			// const_reverse_iterator rbegin(void) const;
 
 			// REND
-			      reverse_iterator rend(void);
-			const_reverse_iterator rend(void) const;
+			//       reverse_iterator rend(void);
+			// const_reverse_iterator rend(void) const;
 			//														//
 			//						ITERATORS						//
 
@@ -284,6 +284,6 @@ namespace ft {
 
 	// # include "vector.tpp"
 
-}
+};
 
 #endif
