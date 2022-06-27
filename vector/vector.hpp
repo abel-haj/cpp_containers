@@ -185,7 +185,11 @@ namespace ft {
 			const_iterator begin(void) const;
 
 			// END
-			      iterator end(void);
+			      iterator end(void)
+			{
+				return ft::random_iterator<value_type>(_vec + _total);
+			}
+
 			const_iterator end(void) const;
 
 			// RBEGIN
