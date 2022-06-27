@@ -1,0 +1,58 @@
+#ifndef		RANDOM_ITERATOR_VECTOR_HPP
+# define	RANDOM_ITERATOR_VECTOR_HPP
+
+// ptrdiff_t
+# include <iostream>
+
+template <class T,											// iterator::value_type
+		  class Category = std::random_access_iterator_tag,	// iterator::iterator_category
+		  class Distance = ptrdiff_t,						// iterator::difference_type
+		  class Pointer = T*,								// iterator::pointer
+		  class Reference = T&								// iterator::reference
+		  >
+	class random_iterator
+{
+	public:
+		typedef		Category		iterator_category;		// the first template parameter (Category)
+		typedef		T				value_type;				// the second template parameter (T)
+		typedef		ptrdiff_t		difference_type;		// the third template parameter (Distance)
+		typedef		T			*	pointer;				// the fourth template parameter (Pointer)
+		typedef		T			&	reference;				// the fifth template parameter (Reference)
+
+		// default
+		random_iterator(void) {}
+
+		// copy constr
+		random_iterator(const random_iterator & ri) {
+			*this = ri;
+		}
+
+		// copy assign
+		random_iterator operator=(const random_iterator & rhs) {
+			(void) rhs;
+
+			return *this;
+		}
+
+		// destruct
+		~random_iterator() {}
+
+		bool operator==(const random_iterator & rhs) {
+			return *this == rhs;
+		}
+
+};
+
+/*
+https://en.cppreference.com/w/cpp/language/operators
+
+https://stackoverflow.com/questions/68212323/implementing-an-iterator-something-like-from-stl-for-my-own-custom-vector-temp
+
+Is default-constructible, copy-constructible, copy-assignable and destructible
+
+X a;
+X b(a);
+b = a;
+*/
+
+#endif
