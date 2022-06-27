@@ -22,6 +22,11 @@ template <class T,											// iterator::value_type
 		// default
 		random_iterator(void) {}
 
+			random_iterator(pointer vec)
+			{
+				my_iterator = vec;
+			}
+
 		// copy constr
 		random_iterator(const random_iterator & ri) {
 			*this = ri;

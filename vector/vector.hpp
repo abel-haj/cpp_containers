@@ -177,7 +177,11 @@ namespace ft {
 			//						ITERATORS						//
 			//														//
 			// BEGIN
-			      iterator begin(void);
+			      iterator begin(void)
+			{
+				return ft::random_iterator<value_type>(_vec);
+			}
+
 			const_iterator begin(void) const;
 
 			// END
