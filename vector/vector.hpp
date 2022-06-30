@@ -213,7 +213,41 @@ namespace ft {
 				return _alloc_type.max_size();
 			}
 
-			void resize (size_type n, value_type val = value_type());
+			void resize (size_type n, value_type val = value_type())
+			{
+				// reduce
+				if (_capacity > n)
+				{
+					pointer tmp;
+					tmp = _alloc_type.allocate(n);
+
+					for  (int i=0; i<_total; i++)
+					{
+						tmp[i] = _vec[i];
+					}
+					for  (int i=_total; i<n; i++)
+					{
+						tmp[i] = val;
+					}
+					_capacity = n;
+
+					_alloc_type.deallocate(_vec, _capacity);
+					_vec = tmp;
+				}
+
+				// increase
+				else if (n > _capacity)
+				{
+					_vec = _alloc_type.allocate(n, _vec);
+
+					for (int i=_capacity; i<n; i++)
+					{
+						_vec[i] = val;
+						_capacity++;
+						_total++;
+					}
+				}
+			}
 
 			size_type capacity(void) const
 			{
