@@ -65,10 +65,18 @@ namespace ft {
 
 			random_iterator operator++(void)
 			{
+				my_iterator++;
+				return *this;
 			}
 
 			random_iterator operator++(int)
-			{}
+			{
+				random_iterator tmp;
+
+				tmp = *this;
+				my_iterator++;
+				return tmp;
+			}
 
 	};
 
