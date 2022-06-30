@@ -18,3 +18,5 @@ fclean			: clean
 
 re				: fclean all
 
+test			: re
+	@./$(NAME)
