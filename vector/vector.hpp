@@ -127,8 +127,6 @@ namespace ft {
 				}
 			}
 
-			//	
-			//	
 			/**
 			 * @brief Destroy the vector object
 			 *    destroy all container elements
