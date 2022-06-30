@@ -14,7 +14,7 @@ $(NAME)			: $(SRCS) $(HSRCS)
 clean			:
 
 fclean			: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re				: fclean all
 
