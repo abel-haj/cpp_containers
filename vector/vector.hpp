@@ -217,7 +217,10 @@ namespace ft {
 				return _capacity;
 			}
 
-			bool empty(void) const;
+			bool empty(void) const
+			{
+				return _total == 0;
+			}
 
 			void reserve (size_type n);
 			//														//
