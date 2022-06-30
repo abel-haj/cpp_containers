@@ -46,7 +46,7 @@ namespace ft {
 			 */
 			explicit vector (const allocator_type& alloc = allocator_type()) : _capacity(0), _total(0)
 			{
-				std::cout << "DEFAULT CONSTRUCTOR CALLED" << std::endl;
+				std::cout << "VECTOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 				_vec = _alloc_type.allocate(_capacity);
 			}
@@ -61,7 +61,7 @@ namespace ft {
 			vector (size_type n, const value_type& val = value_type(),
 					const allocator_type& alloc = allocator_type()) : _capacity(n), _total(0)
 			{
-				std::cout << "FILL CONSTRUCTOR CALLED" << std::endl;
+				std::cout << "VECTOR FILL CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 
 				_vec = _alloc_type.allocate(n);
@@ -87,7 +87,7 @@ namespace ft {
 					std::enable_if< std::is_integral<value_type>::value, value_type >* = nullptr)
 					: _capacity(0), _total(0)
 			{
-				std::cout << "RANGE CONSTRUCTOR CALLED" << std::endl;
+				std::cout << "VECTOR RANGE CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 
 				size_type	new_capacity;
@@ -113,7 +113,7 @@ namespace ft {
 			 */
 			vector (const vector& x) : _capacity(0), _total(0)
 			{
-				std::cout << "COPY CONSTRUCTOR CALLED" << std::endl;
+				std::cout << "VECTOR COPY CONSTRUCTOR CALLED" << std::endl;
 
 				// allocate
 				_vec = _alloc_type.allocate(x._capacity);
@@ -136,7 +136,7 @@ namespace ft {
 			 */
 			~vector(void)
 			{
-				std::cout << "DESTRUCTOR CALLED" << std::endl;
+				std::cout << "VECTOR DESTRUCTOR CALLED" << std::endl;
 				_alloc_type.deallocate(_vec, _capacity);
 
 				// TO VERIFY // recursive?
@@ -154,7 +154,7 @@ namespace ft {
 			 */
 			vector& operator= (const vector& x)
 			{
-				std::cout << "COPY ASSIGNMENNT CALLED" << std::endl;
+				std::cout << "VECTOR COPY ASSIGNMENNT CALLED" << std::endl;
 
 				// deallocate
 				_alloc_type.deallocate(_vec, _capacity);

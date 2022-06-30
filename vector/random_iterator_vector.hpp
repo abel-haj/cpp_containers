@@ -24,7 +24,10 @@ namespace ft {
 			
 
 			// default
-			random_iterator(void) {}
+			random_iterator(void)
+			{
+				std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
+			}
 
 			random_iterator(pointer vec)
 			{
@@ -34,19 +37,24 @@ namespace ft {
 			// copy constr
 			random_iterator(const random_iterator & ri)
 			{
+				std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
 				my_iterator = ri.my_iterator;
 			}
 
 			// copy assign
 			random_iterator operator=(const random_iterator & rhs)
 			{
+				std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
 				my_iterator = rhs.my_iterator;
 
 				return *this;
 			}
 
 			// destruct
-			~random_iterator() {}
+			~random_iterator()
+			{
+				std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
+			}
 
 			bool operator==(const random_iterator & rhs)
 			{
