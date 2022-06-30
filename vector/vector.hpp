@@ -208,7 +208,10 @@ namespace ft {
 				return _total;
 			}
 
-			size_type max_size(void) const;
+			size_type max_size(void) const
+			{
+				return _alloc_type.max_size();
+			}
 
 			void resize (size_type n, value_type val = value_type());
 
