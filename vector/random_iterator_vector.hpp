@@ -34,7 +34,7 @@ namespace ft {
 			// copy constr
 			random_iterator(const random_iterator & ri)
 			{
-				*this = ri;
+				my_iterator = ri.my_iterator;
 			}
 
 			// copy assign
