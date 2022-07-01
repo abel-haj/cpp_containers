@@ -101,19 +101,19 @@ namespace ft {
 				return tmp;
 			}
 
-			friend int operator+(const random_iterator & lhs, const int & n)
+			friend random_iterator operator+(const random_iterator & lhs, const int & n)
 			{
 				return (lhs.my_iterator + n);
 			}
-			friend int operator+(const int & n, const random_iterator & rhs)
+			friend random_iterator operator+(const int & n, const random_iterator & rhs)
 			{
 				return (rhs.my_iterator + n);
 			}
-			friend int operator-(const random_iterator & lhs, const int & n)
+			friend random_iterator operator-(const random_iterator & lhs, const int & n)
 			{
 				return (lhs.my_iterator - n);
 			}
-			friend int operator-(const random_iterator & lhs, const random_iterator & rhs)
+			friend random_iterator operator-(const random_iterator & lhs, const random_iterator & rhs)
 			{
 				return (lhs.my_iterator - rhs.my_iterator);
 			}
