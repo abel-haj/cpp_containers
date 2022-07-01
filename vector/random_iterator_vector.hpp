@@ -4,6 +4,10 @@
 // ptrdiff_t
 # include <iostream>
 
+#ifndef OUT
+	#define OUT 0
+#endif
+
 namespace ft {
 	template <class T,											// iterator::value_type
 			class Category = std::random_access_iterator_tag,	// iterator::iterator_category
@@ -26,7 +30,8 @@ namespace ft {
 			// default
 			random_iterator(void)
 			{
-				std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
+				if (OUT)
+					std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
 			}
 
 			random_iterator(pointer vec)
@@ -37,14 +42,16 @@ namespace ft {
 			// copy constr
 			random_iterator(const random_iterator & ri)
 			{
-				std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
+				if (OUT)
+					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
 				my_iterator = ri.my_iterator;
 			}
 
 			// copy assign
 			random_iterator operator=(const random_iterator & rhs)
 			{
-				std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
+				if (OUT)
+					std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
 				my_iterator = rhs.my_iterator;
 
 				return *this;
@@ -53,7 +60,8 @@ namespace ft {
 			// destruct
 			~random_iterator()
 			{
-				std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
+				if (OUT)
+					std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
 			}
 
 			bool operator==(const random_iterator & rhs)
