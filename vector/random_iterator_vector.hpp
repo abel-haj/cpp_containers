@@ -58,12 +58,12 @@ namespace ft {
 
 			bool operator==(const random_iterator & rhs)
 			{
-				return *my_iterator == *rhs.my_iterator;
+				return my_iterator == rhs.my_iterator;
 			}
 
 			bool operator!=(const random_iterator & rhs)
 			{
-				return *my_iterator != *rhs.my_iterator;
+				return my_iterator != rhs.my_iterator;
 			}
 
 			reference operator*()
@@ -103,46 +103,46 @@ namespace ft {
 
 			friend int operator+(const random_iterator & lhs, const int & n)
 			{
-				return *lhs.my_iterator + n;
+				return (lhs.my_iterator + n);
 			}
 			friend int operator+(const int & n, const random_iterator & rhs)
 			{
-				return *rhs.my_iterator + n;
+				return (rhs.my_iterator + n);
 			}
 			friend int operator-(const random_iterator & lhs, const int & n)
 			{
-				return *lhs.my_iterator - n;
+				return (lhs.my_iterator - n);
 			}
 			friend int operator-(const random_iterator & lhs, const random_iterator & rhs)
 			{
-				return *lhs.my_iterator - *rhs.my_iterator;
+				return (lhs.my_iterator - rhs.my_iterator);
 			}
 
 			friend bool operator<(const random_iterator & lhs, const random_iterator & rhs)
 			{
-				return *lhs.my_iterator < *rhs.my_iterator;
+				return lhs.my_iterator < rhs.my_iterator;
 			}
 			friend bool operator>(const random_iterator & lhs, const random_iterator & rhs)
 			{
-				return *lhs.my_iterator > *rhs.my_iterator;
+				return lhs.my_iterator > rhs.my_iterator;
 			}
 			friend bool operator<=(const random_iterator & lhs, const random_iterator & rhs)
 			{
-				return *lhs.my_iterator <= *rhs.my_iterator;
+				return lhs.my_iterator <= rhs.my_iterator;
 			}
 			friend bool operator>=(const random_iterator & lhs, const random_iterator & rhs)
 			{
-				return *lhs.my_iterator >= *rhs.my_iterator;
+				return lhs.my_iterator >= rhs.my_iterator;
 			}
 
 			random_iterator operator+=(const int & n)
 			{
-				*my_iterator += n;
+				my_iterator += n;
 				return *this;
 			}
 			random_iterator operator-=(const int & n)
 			{
-				*my_iterator -= n;
+				my_iterator -= n;
 				return *this;
 			}
 
