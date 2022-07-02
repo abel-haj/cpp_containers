@@ -24,9 +24,10 @@ namespace ft {
 			typedef		T			*	pointer;				// the fourth template parameter (Pointer)
 			typedef		T			&	reference;				// the fifth template parameter (Reference)
 
+		private:
 			pointer		my_iterator;
-			
 
+		public:
 			// default
 			random_iterator(void)
 			{
