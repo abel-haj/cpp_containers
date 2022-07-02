@@ -186,6 +186,7 @@ namespace ft {
 			// BEGIN
 			      iterator begin(void)
 			{
+				// const-qualified?
 				return ft::random_iterator<value_type>(_vec);
 			}
 
@@ -194,6 +195,7 @@ namespace ft {
 			// END
 			      iterator end(void)
 			{
+				// const-qualified?
 				return ft::random_iterator<value_type>(_vec + _total);
 			}
 
