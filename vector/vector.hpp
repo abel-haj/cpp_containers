@@ -328,7 +328,21 @@ namespace ft {
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last);
 			// fill (2)
-			void assign (size_type n, const value_type& val);
+			void assign (size_type n, const value_type& val)
+			{
+				if (n > _capacity)
+				{
+					_alloc_type.deallocate(_vec, _capacity);
+					_vec = _alloc_type.allocate(n);
+					_capacity = n;
+				}
+				_total = 0;
+				for (size_type i=0; i<n; i++)
+				{
+					_vec[i] = val;
+					_total++;
+				}
+			}
 
 			void push_back (const value_type& val);
 
