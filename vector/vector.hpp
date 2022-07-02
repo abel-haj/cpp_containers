@@ -247,14 +247,25 @@ namespace ft {
 				// increase
 				else if (n > _capacity)
 				{
-					_vec = _alloc_type.allocate(n, _vec);
+					pointer tmp;
+					int newcap;
 
-					for (size_type i=_capacity; i<n; i++)
+					tmp = _vec;
+					newcap = (_capacity * 2) > n ? _capacity * 2 : n;
+					_vec = _alloc_type.allocate(newcap, _vec);
+
+					for (size_type i=0; i<_total; i++)
+					{
+						_vec[i] = tmp[i];
+					}
+					for (size_type i=_total; i<newcap; i++)
 					{
 						_vec[i] = val;
-						_capacity++;
 						_total++;
 					}
+
+					_alloc_type.deallocate(tmp, _capacity);
+					_capacity = n;
 				}
 			}
 
