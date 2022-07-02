@@ -230,11 +230,11 @@ namespace ft {
 					pointer tmp;
 					tmp = _alloc_type.allocate(n);
 
-					for  (int i=0; i<_total; i++)
+					for  (size_type i=0; i<_total; i++)
 					{
 						tmp[i] = _vec[i];
 					}
-					for  (int i=_total; i<n; i++)
+					for  (size_type i=_total; i<n; i++)
 					{
 						tmp[i] = val;
 					}
@@ -249,7 +249,7 @@ namespace ft {
 				{
 					_vec = _alloc_type.allocate(n, _vec);
 
-					for (int i=_capacity; i<n; i++)
+					for (size_type i=_capacity; i<n; i++)
 					{
 						_vec[i] = val;
 						_capacity++;
