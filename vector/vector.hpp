@@ -289,8 +289,18 @@ namespace ft {
 				return _vec[n];
 			}
 
-			      reference at (size_type n);
-			const_reference at (size_type n) const;
+			      reference at (size_type n)
+			{
+				if (n < 0  || n >= _total)
+					throw std::out_of_range("vector");
+				return _vec[n];
+			}
+			const_reference at (size_type n) const
+			{
+				if (n >= _capacity || n < 0)
+					throw std::out_of_range("vector");
+				return _vec[n];
+			}
 
 			      reference front(void);
 			const_reference front(void) const;
