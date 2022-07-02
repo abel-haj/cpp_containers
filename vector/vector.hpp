@@ -89,7 +89,7 @@ namespace ft {
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
 					const allocator_type& alloc = allocator_type(),
-					std::enable_if< std::is_integral<value_type>::value, value_type >* = nullptr)
+					typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type = InputIterator())
 					: _capacity(0), _total(0)
 			{
 				if (OUT)
