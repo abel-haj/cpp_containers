@@ -302,11 +302,23 @@ namespace ft {
 				return _vec[n];
 			}
 
-			      reference front(void);
-			const_reference front(void) const;
+			      reference front(void)
+			{
+				return *(_vec);
+			}
+			const_reference front(void) const
+			{
+				return *(_vec);
+			}
 
-			      reference back(void);
-			const_reference back(void) const;
+			      reference back(void)
+			{
+				return *(_vec + _total - 1);
+			}
+			const_reference back(void) const
+			{
+				return *(_vec + _total - 1);
+			}
 			//													//
 			//					ELEMENT ACCESS					//
 
