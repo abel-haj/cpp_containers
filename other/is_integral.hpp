@@ -8,7 +8,7 @@ namespace ft
 	class is_integral
 	{
 		public:
-			static const T value = false;
+			static const int value = false;
 	};
 
 	template <>
