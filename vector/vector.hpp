@@ -326,7 +326,26 @@ namespace ft {
 			//												//
 			// range (1)
 			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last);
+			void assign (InputIterator first, InputIterator last)
+			{
+				int newcapacity;
+
+				newcapacity = last - first;
+
+				if (newcapacity > _capacity)
+				{
+					_alloc_type.deallocate(_vec, _capacity);
+					_vec = _alloc_type.allocate(newcapacity);
+					_capacity = newcapacity;
+				}
+				_total = 0;
+				for (size_type i=0; i<newcapacity; i++)
+				{
+					_vec[i] = *first;
+					first++;
+					_total++;
+				}
+			}
 			// fill (2)
 			void assign (size_type n, const value_type& val)
 			{
