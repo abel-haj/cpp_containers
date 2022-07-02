@@ -268,7 +268,28 @@ namespace ft {
 				return _total == 0;
 			}
 
-			void reserve (size_type n);
+			void reserve (size_type n)
+			{
+				if (n > _capacity)
+				{
+					pointer tmp;
+
+					tmp = _vec;
+					_vec = _alloc_type.allocate(n, _vec);
+
+					for (size_type i=0; i<_total; i++)
+					{
+						_vec[i] = tmp[i];
+					}
+					for (size_type i=_total; i<n; i++)
+					{
+						_vec[i] = value_type();
+					}
+
+					_alloc_type.deallocate(tmp, _capacity);
+					_capacity = n;
+				}
+			}
 			//														//
 			//						CAPACITY						//
 
