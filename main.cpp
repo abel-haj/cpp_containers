@@ -2,6 +2,7 @@
 #include <vector>
 
 #include <iostream>
+#include <exception>
 
 int		main(void)
 {
@@ -15,6 +16,7 @@ int		main(void)
 
 	std::vector<int> 	their(arr, arr + 3);
 	ft::vector<int>		mine(arr, arr + 3);
+	// ft::vector<int>		mine(3, 2);
 
 	// int	a,b;
 
@@ -50,6 +52,8 @@ int		main(void)
 	// ft::vector<int> mine(10, 1337);
 	std::vector<int>::iterator itstd = their.begin();
 	ft::vector<int>::iterator itft = mine.begin();
+	their.clear();
+	their.pop_back();
 
 	// // ----
 	// std::vector<int> emptystd;
@@ -101,23 +105,105 @@ int		main(void)
 	// }
 	// // ----
 
-	itstd[0];
 
-	ft::vector<int>::iterator itft2 = mine.begin();
-	itft = mine.begin();
-	itft2 = mine.begin();
-	itstd = their.begin();
+	// // ----
+	// ft::vector<int>::iterator itft2 = mine.begin();
+	// itft = mine.begin();
+	// itft2 = mine.begin();
+	// itstd = their.begin();
 
-	std::cout << (itft + 5) << std::endl;
-	std::cout << (5 + itft) << std::endl;
-	std::cout << (itft - 5) << std::endl;
-	std::cout << (itft - itft2) << std::endl;
-	std::cout << *itft << std::endl;
-	itft += 3;
-	std::cout << *itft << std::endl;
-	itft -= 3;
-	std::cout << *itft << std::endl;
+	// std::cout << *(itft + 5) << std::endl;
+	// std::cout << *(5 + itft) << std::endl;
+	// std::cout << *(itft - 5) << std::endl;
+	// std::cout << *(itft - itft2) << std::endl;
+	// std::cout << *itft << std::endl;
+	// itft += 3;
+	// std::cout << *itft << std::endl;
+	// itft -= 3;
+	// std::cout << *itft << std::endl;
+	// // ----
 
+
+	// // ----
+	// std::vector<int> vec1(3);
+
+	// vec1[2] = 5;
+	// vec1[1] = 10;
+	// vec1[0] = 5;
+
+	// std::vector<int>::iterator it1;
+	// std::vector<int>::iterator it2;
+
+	// it1 = vec1.begin();
+	// it2 = vec1.end();
+
+	// it2--;
+
+	// it1+=1;
+
+	// std::cout << *it1 << " " << *it2 << std::endl;
+	// std::cout << *(it1 + 1) << std::endl;
+	// std::cout << *(1 + it1) << std::endl;
+	// std::cout << *(it1 - 1) << std::endl;
+	// std::cout << (it1 > it2) << std::endl;
+	// std::cout << (it1 < it2) << std::endl;
+	// std::cout << (it1 == it2) << std::endl;
+	// std::cout << std::endl;
+
+	// for (std::vector<int>::iterator it=vec1.begin(); it!=vec1.end(); it++)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	// // ----
+
+
+	// // ----
+	// try {
+	// 	their.push_back(2);
+	// 	their.at(-1);
+	// 	// their.at(2);
+	// 	// mine.at(3);
+	// } catch (std::out_of_range & e) {
+	// 	std::cout << e.what() << std::endl; 
+	// }
+	// // ----
+
+
+	// // ----
+	// std::vector<int> posvecstd(1);
+	// ft::vector<int> posvecft(1);
+
+	// std::cout << posvecstd.front() << std::endl;
+	// std::cout << posvecstd.back() << std::endl;
+	// std::cout << std::endl;
+	// std::cout << posvecft.front() << std::endl;
+	// std::cout << posvecft.back() << std::endl;
+	// // ----
+
+
+	// // ----
+	// std::vector<int>tmpvec(1, 1);
+	// std::cout << their.capacity() << " capacity" << std::endl;
+	// std::cout << their.size() << " size" << std::endl;
+	// their.assign(tmpvec.begin(), (tmpvec.end()));
+	// std::cout << their.capacity() << " capacity" << std::endl;
+	// std::cout << their.size() << " size" << std::endl;
+	// std::cout << "--------" << std::endl;
+	// for (std::vector<int>::iterator it=their.begin(); it!=their.end(); it++)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	// // ----
+
+
+	// // ----
+	// ft::vector<int>tmpvec(1, 1);
+	// std::cout << tmpvec.size() << " capacity" << std::endl;
+	// tmpvec.pop_back();
+	// std::cout << tmpvec.size() << " capacity" << std::endl;
+	// tmpvec.pop_back();
+	// std::cout << tmpvec.size() << " capacity" << std::endl;
+	// // ----
 
 	return 0;
 }
