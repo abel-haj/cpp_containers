@@ -15,7 +15,7 @@ namespace ft {
 			class Pointer = T*,								// iterator::pointer
 			class Reference = T&								// iterator::reference
 			>
-		class random_iterator {
+	class random_iterator {
 
 		public:
 			typedef		Category		iterator_category;		// the first template parameter (Category)
@@ -65,12 +65,12 @@ namespace ft {
 					std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
 			}
 
-			bool operator==(const random_iterator & rhs)
+			bool operator==(const random_iterator & rhs) const
 			{
 				return my_iterator == rhs.my_iterator;
 			}
 
-			bool operator!=(const random_iterator & rhs)
+			bool operator!=(const random_iterator & rhs) const
 			{
 				return my_iterator != rhs.my_iterator;
 			}
