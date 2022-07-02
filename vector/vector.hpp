@@ -310,7 +310,10 @@ namespace ft {
 
 			void push_back (const value_type& val);
 
-			void pop_back(void);
+			void pop_back(void)
+			{
+				_total--;
+			}
 
 			// single element (1)
 			iterator insert (iterator position, const value_type& val);
