@@ -9,6 +9,8 @@
 // print debug
 # include <iostream>
 # include "random_iterator_vector.hpp"
+# include "../other/enable_if.hpp"
+# include "../other/is_integral.hpp"
 
 #ifndef OUT
 	#define OUT 0
