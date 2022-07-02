@@ -8,6 +8,8 @@
 # include <vector>
 // print debug
 # include <iostream>
+// out of range
+# include <exception>
 # include "random_iterator_vector.hpp"
 # include "../other/enable_if.hpp"
 # include "../other/is_integral.hpp"
