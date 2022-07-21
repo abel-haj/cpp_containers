@@ -398,7 +398,6 @@ namespace ft {
 					_vec = _alloc_type.allocate(n);
 					_capacity = n;
 				}
-				_total = 0;
 				for (size_type i=0; i<n; i++)
 				{
 					_vec[i] = val;
