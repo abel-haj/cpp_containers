@@ -387,6 +387,11 @@ namespace ft {
 			// fill (2)
 			void assign (size_type n, const value_type& val)
 			{
+				// Any elements held in the container before the call are destroyed
+				_alloc_type.destroy(_vec);
+				_total = 0;
+
+				// reallocate only only if the new vector size surpasses the current vector capacity
 				if (n > _capacity)
 				{
 					_alloc_type.deallocate(_vec, _capacity);
