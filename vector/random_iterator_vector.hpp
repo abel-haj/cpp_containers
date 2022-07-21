@@ -2,7 +2,8 @@
 # define	RANDOM_ITERATOR_VECTOR_HPP
 
 // ptrdiff_t
-# include <iostream>
+# include <cstddef>
+// # include <iostream>
 
 #ifndef OUT
 	#define OUT 0
