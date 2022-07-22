@@ -205,5 +205,151 @@ int		main(void)
 	// std::cout << tmpvec.size() << " capacity" << std::endl;
 	// // ----
 
+
+	// // ----
+	// std::vector<int> pushvec;
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// pushvec.push_back(1);
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// pushvec.push_back(1);
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// pushvec.push_back(1);
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// pushvec.push_back(1);
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// pushvec.push_back(1);
+
+	// std::cout << "SIZE " << pushvec.size() << std::endl;
+	// std::cout << "CAP  " << pushvec.capacity() << std::endl;
+
+	// for (size_t i = 0; i < pushvec.size(); i++)
+	// {
+	// 	std::cout << pushvec.at(i) << std::endl;
+	// }
+	// // ----
+
+
+	// // ----
+	// // std::vector<int> falseInser;
+	// std::vector<int> inser;
+	// std::vector<int>::iterator inserIt;
+
+
+	// inser.push_back(1);
+	// inser.push_back(2);
+	// inser.push_back(3);
+	// inser.push_back(4);
+	// inser.push_back(5);
+
+
+	// inserIt = inser.begin();
+	// for (size_t i = 0; i < 5; i++)
+	// {
+	// 	inserIt++;
+	// }
+	// if (inserIt == inser.end())
+	// 	std::cout << "YES" << std::endl;
+	// else
+	// 	std::cout << "NO" << std::endl;
+	// inser.insert(inserIt, 0);
+
+
+	// // std::cout << "Capacity " << inser.capacity() << std::endl; // 5
+	// // std::cout << "Size     " << inser.size() << std::endl; // 8
+	// for (size_t i = 0; i < inser.size(); i++)
+	// {
+	// 	std::cout << inser[i] << std::endl;
+	// }
+	// // std::cout << std::endl;
+
+
+	// // inserIt = inser.begin();
+	// // inser.insert(inserIt, 10);
+
+
+	// // std::cout << inser.capacity() << std::endl;
+	// // std::cout << inser.size() << std::endl;
+	// // std::cout << std::endl;
+	// // ----
+
+
+	// // ----
+	// ft::vector<int>clr;
+
+	// clr.push_back(1);
+	// clr.push_back(2);
+	// clr.push_back(3);
+
+	// std::cout << "Capacity " << clr.capacity() << std::endl;
+	// std::cout << "Size     " << clr.size() << std::endl;
+	// std::cout << clr[1] << std::endl;
+
+	// clr.clear();
+
+	// std::cout << "Capacity " << clr.capacity() << std::endl;
+	// std::cout << "Size     " << clr.size() << std::endl;
+	// std::cout << clr[1] << std::endl;
+	// // ----
+
+
+	// // ----
+	ft::vector<int>swp1;
+	ft::vector<int>swp2;
+
+	swp1.push_back(1);
+	swp1.push_back(2);
+	swp1.push_back(3);
+	swp1.push_back(4);
+
+	swp2.push_back(2);
+	swp2.push_back(1);
+
+	std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
+	for (size_t i = 0; i < swp1.size(); i++)
+	{
+		std::cout << swp1[i] << " ";
+	}
+	std::cout << "\t\tSWAP 1" << std::endl;
+	std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
+	for (size_t i = 0; i < swp2.size(); i++)
+	{
+		std::cout << swp2[i] << " ";
+	}
+	std::cout << "\t\t\tSWAP 2" << std::endl;
+	std::cout << std::endl;
+
+	swp1.swap(swp2);
+
+	std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
+	for (size_t i = 0; i < swp1.size(); i++)
+	{
+		std::cout << swp1[i] << " ";
+	}
+	std::cout << "\t\t\tSWAP 1" << std::endl;
+	std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
+	for (size_t i = 0; i < swp2.size(); i++)
+	{
+		std::cout << swp2[i] << " ";
+	}
+	std::cout << "\t\tSWAP 2" << std::endl;
+	std::cout << std::endl;
+	
+	// // ----
+
 	return 0;
 }
