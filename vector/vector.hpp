@@ -405,7 +405,45 @@ namespace ft {
 				}
 			}
 
-			void push_back (const value_type& val);
+
+			void push_back (const value_type& val)
+			{
+				if (_total < _capacity)
+				{
+					_vec[_total] = val;
+					_total++;
+				}
+
+				else
+				{
+					if (_capacity == 0)
+					{
+						_alloc_type.deallocate(_vec, _capacity);
+						_vec = _alloc_type.allocate(1);
+						_vec[_total] = val;
+						_capacity = 1;
+						_total = 1;
+					}
+
+					else
+					{
+						pointer tmp;
+
+						tmp = _vec;
+						_vec = _alloc_type.allocate(_capacity * 2);
+
+						for (size_type i=0; i<_capacity; i++)
+						{
+							_vec[i] = tmp[i];
+						}
+						_vec[_total] = val;
+						_total++;
+						
+						_alloc_type.deallocate(tmp, _capacity);
+						_capacity *= 2;
+					}
+				}
+			}
 
 			void pop_back(void)
 			{
