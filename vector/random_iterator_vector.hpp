@@ -123,7 +123,8 @@ namespace ft {
 			{
 				return (lhs.my_iterator - n);
 			}
-			friend random_iterator operator-(const random_iterator & lhs, const random_iterator & rhs)
+
+			friend difference_type operator-(const random_iterator & lhs, const random_iterator & rhs)
 			{
 				return (lhs.my_iterator - rhs.my_iterator);
 			}
