@@ -66,6 +66,11 @@ namespace ft {
 					std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
 			}
 
+			pointer base()
+			{
+				return my_iterator;
+			}
+
 			bool operator==(const random_iterator & rhs) const
 			{
 				return my_iterator == rhs.my_iterator;
