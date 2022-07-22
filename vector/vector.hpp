@@ -423,7 +423,34 @@ namespace ft {
 			iterator erase (iterator position);
 			iterator erase (iterator first, iterator last);
 
-			void swap (vector& x);
+			void swap (vector& x)
+			{
+				pointer tmp;
+				size_type tot;
+				size_type cap;
+
+				tmp = _vec;
+				tot = _total;
+				cap = _capacity;
+				_vec = _alloc_type.allocate(x.capacity());
+				for (size_type i = 0; i < x.size(); i++)
+				{
+					_vec[i] = x[i];
+				}
+				_total = x.size();
+				_capacity = x.capacity();
+
+				_alloc_type.deallocate(x._vec, x.capacity());
+				x._vec = _alloc_type.allocate(cap);
+				for (size_type i = 0; i < tot; i++)
+				{
+					x[i] = tmp[i];
+				}
+				x._total = tot;
+				x._capacity = cap;
+
+				_alloc_type.deallocate(tmp, cap);
+			}
 
 			void clear(void)
 			{
