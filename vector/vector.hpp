@@ -425,7 +425,11 @@ namespace ft {
 
 			void swap (vector& x);
 
-			void clear(void);
+			void clear(void)
+			{
+				_alloc_type.destroy(_vec);
+				_total = 0;
+			}
 			//												//
 			//					MODIFIERS					//
 
