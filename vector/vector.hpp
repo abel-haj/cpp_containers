@@ -451,9 +451,63 @@ namespace ft {
 			}
 
 			// single element (1)
-			iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val)
+			{
+				// there is room
+				if (_capacity > _total)
+				{
+					size_type skip = 0;
+					while (position != (_vec + skip))
+					{
+						skip++;
+					}
+
+					for (size_type i=_total; i>skip; i--)
+					{
+						_vec[i] = _vec[i - 1];
+					}
+
+					_vec[skip] = val;
+					
+					_total++;
+					return _vec + skip;
+				}
+
+				// there is no room
+				else
+				{
+					pointer tmp;
+					size_type a = 0;
+
+					tmp = _vec;
+					_vec = _alloc_type.allocate(_capacity + 1);
+
+					while (position != (_vec + a))
+					{
+						_vec[a] = tmp[a];
+						a++;
+					}
+
+					_vec[a] = val;
+
+					for (size_t i=a+1; i<_total+1; i++)
+					{
+						_vec[i] = tmp[i - 1];
+					}
+					_total++;
+					_capacity++;
+
+					return _vec + a;
+				}
+			}
 			// fill (2)
-				void insert (iterator position, size_type n, const value_type& val);
+			void insert (iterator position, size_type n, const value_type& val)
+			{
+				for (size_type i = 0; i < n; i++)
+				{
+					this->insert(position, val);
+				}
+			}
 			// range (3)
 			template <class InputIterator>
 				void insert (iterator position, InputIterator first, InputIterator last);
