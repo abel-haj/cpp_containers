@@ -11,6 +11,7 @@
 // out of range
 # include <exception>
 # include "random_iterator_vector.hpp"
+# include "reverse_iterator_vector.hpp"
 # include "../other/enable_if.hpp"
 # include "../other/is_integral.hpp"
 
@@ -24,18 +25,18 @@ namespace ft {
 	class vector {
 
 		public:
-			typedef			T								value_type; // The first template parameter (T)
-			typedef			std::allocator<value_type>		allocator_type; // The second template parameter (Alloc)
-			typedef			value_type	&					reference; // allocator_type::reference
-			typedef	const	value_type						const_reference; // allocator_type::const_reference
-			typedef			value_type	*					pointer; // allocator_type::pointer
-			typedef	const	value_type	*					const_pointer; // allocator_type::const_pointer
-			typedef			ft::random_iterator<value_type>		iterator; // a random access iterator to value_type	convertible to const_iterator
-			typedef			typename std::vector<value_type>::const_iterator							const_iterator; // a random access iterator to const value_type
-			// typedef										reverse_iterator; // reverse_iterator<iterator>
-			// typedef										const_reverse_iterator; // reverse_iterator<const_iterator>
-			typedef			ptrdiff_t						difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type
-			typedef			size_t							size_type; // an unsigned integral type that can represent any non-negative value of difference_type
+			typedef			T											value_type; // The first template parameter (T)
+			typedef			std::allocator<value_type>					allocator_type; // The second template parameter (Alloc)
+			typedef			value_type	&								reference; // allocator_type::reference
+			typedef	const	value_type									const_reference; // allocator_type::const_reference
+			typedef			value_type	*								pointer; // allocator_type::pointer
+			typedef	const	value_type	*								const_pointer; // allocator_type::const_pointer
+			typedef			ft::random_iterator<value_type>				iterator; // a random access iterator to value_type	convertible to const_iterator
+			typedef			ft::random_iterator<const value_type>		const_iterator; // a random access iterator to const value_type
+			typedef			ft::reverse_iterator<value_type>			reverse_iterator; // reverse_iterator<iterator>
+			typedef			ft::reverse_iterator<const value_type>		const_reverse_iterator; // reverse_iterator<const_iterator>
+			typedef			ptrdiff_t									difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type
+			typedef			size_t										size_type; // an unsigned integral type that can represent any non-negative value of difference_type
 
 		private:
 			pointer			_vec;
@@ -194,7 +195,10 @@ namespace ft {
 				return ft::random_iterator<value_type>(_vec);
 			}
 
-			const_iterator begin(void) const;
+			const_iterator begin(void) const
+			{
+				return ft::random_iterator<const value_type>(_vec);
+			}
 
 			// END
 			      iterator end(void)
@@ -203,7 +207,10 @@ namespace ft {
 				return ft::random_iterator<value_type>(_vec + _total);
 			}
 
-			const_iterator end(void) const;
+			const_iterator end(void) const
+			{
+				return ft::random_iterator<const value_type>(_vec + _total);
+			}
 
 			// RBEGIN
 			//       reverse_iterator rbegin(void);
