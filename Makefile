@@ -1,6 +1,7 @@
 NAME			=	containers
 CC				=	c++
 CPPFLAGS		=	-std=c++98
+DFLAGS			=	-g #-fsanitize=address
 # CFLAGS			=	-Wall -Wextra -Werror
 
 SRCS			=	main.cpp
@@ -9,7 +10,7 @@ HSRCS			=	vector/vector.hpp
 all				: $(NAME)
 
 $(NAME)			: $(SRCS) $(HSRCS)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(SRCS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) $(SRCS) -o $(NAME)
 
 clean			:
 
