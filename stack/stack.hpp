@@ -57,42 +57,36 @@ namespace ft {
 			}
 
 			// (1)
-			template <class T, class Container>
 			friend bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct == rhs.ct;
 			}
 
 			// (2)
-			template <class T, class Container>
 			friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct != rhs.ct;
 			}
 
 			// (3)
-			template <class T, class Container>
 			friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct < rhs.ct;
 			}
 
 			// (4)
-			template <class T, class Container>
 			friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct <= rhs.ct;
 			}
 
 			// (5)
-			template <class T, class Container>
 			friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct > rhs.ct;
 			}
 
 			// (6)
-			template <class T, class Container>
 			friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
 			{
 				return lhs.ct >= rhs.ct;
