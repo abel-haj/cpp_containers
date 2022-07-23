@@ -510,7 +510,17 @@ namespace ft {
 			}
 			// range (3)
 			template <class InputIterator>
-				void insert (iterator position, InputIterator first, InputIterator last);
+			void insert (iterator position, InputIterator first,
+				typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type last)
+				// InputIterator last)
+			{
+				while (first != last)
+				{
+					this->insert(position, *first);
+					position++;
+					first++;
+				}
+			}
 
 			iterator erase (iterator position)
 			{
