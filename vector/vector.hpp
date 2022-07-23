@@ -584,6 +584,21 @@ namespace ft {
 			//												//
 			//					MODIFIERS					//
 
+			//					ALLOCATOR					//
+			//												//
+			allocator_type get_allocator() const
+			{
+				return _alloc_type;
+			}
+			//												//
+			//					ALLOCATOR					//
+
+			//			RELATIONAL OPERATORS				//
+			//												//
+			//												//
+			//			RELATIONAL OPERATORS				//
+
+
 	};
 
 	//						SWAP					//
