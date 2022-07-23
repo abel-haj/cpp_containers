@@ -458,7 +458,20 @@ namespace ft {
 			template <class InputIterator>
 				void insert (iterator position, InputIterator first, InputIterator last);
 
-			iterator erase (iterator position);
+			iterator erase (iterator position)
+			{
+				size_type i = 0;
+				while (position != (_vec + i))
+				{
+					i++;
+				}
+				for (i=i; i<_total-1; i++)
+				{
+					_vec[i] = _vec[i + 1];
+				}
+				_total--;
+				return position++;
+			}
 			iterator erase (iterator first, iterator last);
 
 			void swap (vector& x)
