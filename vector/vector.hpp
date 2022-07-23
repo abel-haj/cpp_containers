@@ -533,12 +533,13 @@ namespace ft {
 
 			iterator erase (iterator position)
 			{
-				size_type i = 0;
-				while (position != (_vec + i))
+				size_type skip = 0;
+				while (position != (_vec + skip))
 				{
-					i++;
+					skip++;
 				}
-				for (i=i; i<_total-1; i++)
+				// _alloc_type.destroy(_vec[skip]);
+				for (size_type i=skip; i<_total-1; i++)
 				{
 					_vec[i] = _vec[i + 1];
 				}
