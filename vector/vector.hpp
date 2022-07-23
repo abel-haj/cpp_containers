@@ -494,6 +494,8 @@ namespace ft {
 					{
 						_vec[i] = tmp[i - 1];
 					}
+
+					_alloc_type.deallocate(tmp, _capacity);
 					_total++;
 					_capacity++;
 
