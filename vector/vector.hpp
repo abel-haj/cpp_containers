@@ -546,7 +546,30 @@ namespace ft {
 				_total--;
 				return position++;
 			}
-			iterator erase (iterator first, iterator last);
+			iterator erase (iterator first, iterator last)
+			{
+				size_type first_ers = 0;
+				while (first != (_vec + first_ers))
+				{
+					first_ers++;
+				}
+
+				size_type last_ers = first_ers;
+				while (last != (_vec + last_ers))
+				{
+					last_ers++;
+				}
+
+				while (last_ers < _total)
+				{
+					_vec[first_ers] = _vec[last_ers];
+					first_ers++;
+					last_ers++;
+				}
+
+				_total = _total - (last - first);
+				return last - first_ers;
+			}
 
 			void swap (vector& x)
 			{
