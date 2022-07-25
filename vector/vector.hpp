@@ -265,7 +265,7 @@ namespace ft {
 
 					tmp = _vec;
 					newcap = (_capacity * 2) > n ? _capacity * 2 : n;
-					_vec = _alloc_type.allocate(newcap, _vec);
+					_vec = _alloc_type.allocate(newcap);
 
 					for (size_type i=0; i<_total; i++)
 					{
@@ -299,7 +299,7 @@ namespace ft {
 					pointer tmp;
 
 					tmp = _vec;
-					_vec = _alloc_type.allocate(n, _vec);
+					_vec = _alloc_type.allocate(n);
 
 					for (size_type i=0; i<_total; i++)
 					{
