@@ -487,7 +487,7 @@ namespace ft {
 					size_type a = 0;
 
 					tmp = _vec;
-					_vec = _alloc_type.allocate(_capacity + 1);
+					_vec = _alloc_type.allocate(_capacity == 0 ? 1 : _capacity * 2);
 
 					while (position != (_vec + a))
 					{
