@@ -32,3 +32,9 @@
 *.app
 
 *.dSYM
+
+# Visual Studio Code workspace settings
+.vscode
+
+# Test files and directories 
+test*
