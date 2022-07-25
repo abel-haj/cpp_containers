@@ -16,7 +16,7 @@ namespace ft {
 			class Pointer = T*,								// iterator::pointer
 			class Reference = T&								// iterator::reference
 			>
-	class random_iterator {
+	class vector_iterator {
 
 		public:
 			typedef		Category		iterator_category;		// the first template parameter (Category)
@@ -30,19 +30,19 @@ namespace ft {
 
 		public:
 			// default
-			random_iterator(void)
+			vector_iterator(void)
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
 			}
 
-			random_iterator(pointer vec)
+			vector_iterator(pointer vec)
 			{
 				my_iterator = vec;
 			}
 
 			// copy constr
-			random_iterator(const random_iterator & ri)
+			vector_iterator(const vector_iterator & ri)
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
@@ -50,7 +50,7 @@ namespace ft {
 			}
 
 			// copy assign
-			random_iterator operator=(const random_iterator & rhs)
+			vector_iterator operator=(const vector_iterator & rhs)
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
@@ -60,7 +60,7 @@ namespace ft {
 			}
 
 			// destruct
-			~random_iterator()
+			~vector_iterator()
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
@@ -71,12 +71,12 @@ namespace ft {
 				return my_iterator;
 			}
 
-			bool operator==(const random_iterator & rhs) const
+			bool operator==(const vector_iterator & rhs) const
 			{
 				return my_iterator == rhs.my_iterator;
 			}
 
-			bool operator!=(const random_iterator & rhs) const
+			bool operator!=(const vector_iterator & rhs) const
 			{
 				return my_iterator != rhs.my_iterator;
 			}
@@ -86,77 +86,77 @@ namespace ft {
 				return *my_iterator;
 			}
 
-			random_iterator operator++(void)
+			vector_iterator operator++(void)
 			{
 				my_iterator++;
 				return *this;
 			}
 
-			random_iterator operator++(int)
+			vector_iterator operator++(int)
 			{
-				random_iterator tmp;
+				vector_iterator tmp;
 
 				tmp = *this;
 				my_iterator++;
 				return tmp;
 			}
 
-			random_iterator operator--(void)
+			vector_iterator operator--(void)
 			{
 				my_iterator--;
 				return *this;
 			}
 
-			random_iterator operator--(int)
+			vector_iterator operator--(int)
 			{
-				random_iterator tmp;
+				vector_iterator tmp;
 
 				tmp = *this;
 				my_iterator--;
 				return tmp;
 			}
 
-			friend random_iterator operator+(const random_iterator & lhs, const int & n)
+			friend vector_iterator operator+(const vector_iterator & lhs, const int & n)
 			{
 				return (lhs.my_iterator + n);
 			}
-			friend random_iterator operator+(const int & n, const random_iterator & rhs)
+			friend vector_iterator operator+(const int & n, const vector_iterator & rhs)
 			{
 				return (rhs.my_iterator + n);
 			}
-			friend random_iterator operator-(const random_iterator & lhs, const int & n)
+			friend vector_iterator operator-(const vector_iterator & lhs, const int & n)
 			{
 				return (lhs.my_iterator - n);
 			}
 
-			friend difference_type operator-(const random_iterator & lhs, const random_iterator & rhs)
+			friend difference_type operator-(const vector_iterator & lhs, const vector_iterator & rhs)
 			{
 				return (lhs.my_iterator - rhs.my_iterator);
 			}
 
-			friend bool operator<(const random_iterator & lhs, const random_iterator & rhs)
+			friend bool operator<(const vector_iterator & lhs, const vector_iterator & rhs)
 			{
 				return lhs.my_iterator < rhs.my_iterator;
 			}
-			friend bool operator>(const random_iterator & lhs, const random_iterator & rhs)
+			friend bool operator>(const vector_iterator & lhs, const vector_iterator & rhs)
 			{
 				return lhs.my_iterator > rhs.my_iterator;
 			}
-			friend bool operator<=(const random_iterator & lhs, const random_iterator & rhs)
+			friend bool operator<=(const vector_iterator & lhs, const vector_iterator & rhs)
 			{
 				return lhs.my_iterator <= rhs.my_iterator;
 			}
-			friend bool operator>=(const random_iterator & lhs, const random_iterator & rhs)
+			friend bool operator>=(const vector_iterator & lhs, const vector_iterator & rhs)
 			{
 				return lhs.my_iterator >= rhs.my_iterator;
 			}
 
-			random_iterator operator+=(const int & n)
+			vector_iterator operator+=(const int & n)
 			{
 				my_iterator += n;
 				return *this;
 			}
-			random_iterator operator-=(const int & n)
+			vector_iterator operator-=(const int & n)
 			{
 				my_iterator -= n;
 				return *this;

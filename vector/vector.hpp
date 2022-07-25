@@ -11,7 +11,7 @@
 // out of range
 # include <exception>
 # include "random_iterator_vector.hpp"
-# include "reverse_iterator_vector.hpp"
+# include "../other/reverse_iterator.hpp"
 # include "../other/enable_if.hpp"
 # include "../other/is_integral.hpp"
 
@@ -31,8 +31,8 @@ namespace ft {
 			typedef	const	value_type									const_reference; // allocator_type::const_reference
 			typedef			value_type	*								pointer; // allocator_type::pointer
 			typedef	const	value_type	*								const_pointer; // allocator_type::const_pointer
-			typedef			ft::random_iterator<value_type>				iterator; // a random access iterator to value_type	convertible to const_iterator
-			typedef			ft::random_iterator<const value_type>		const_iterator; // a random access iterator to const value_type
+			typedef			ft::vector_iterator<value_type>				iterator; // a random access iterator to value_type	convertible to const_iterator
+			typedef			ft::vector_iterator<const value_type>		const_iterator; // a random access iterator to const value_type
 			typedef			ft::reverse_iterator<value_type>			reverse_iterator; // reverse_iterator<iterator>
 			typedef			ft::reverse_iterator<const value_type>		const_reverse_iterator; // reverse_iterator<const_iterator>
 			typedef			ptrdiff_t									difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type
@@ -192,24 +192,24 @@ namespace ft {
 			      iterator begin(void)
 			{
 				// const-qualified?
-				return ft::random_iterator<value_type>(_vec);
+				return ft::vector_iterator<value_type>(_vec);
 			}
 
 			const_iterator begin(void) const
 			{
-				return ft::random_iterator<const value_type>(_vec);
+				return ft::vector_iterator<const value_type>(_vec);
 			}
 
 			// END
 			      iterator end(void)
 			{
 				// const-qualified?
-				return ft::random_iterator<value_type>(_vec + _total);
+				return ft::vector_iterator<value_type>(_vec + _total);
 			}
 
 			const_iterator end(void) const
 			{
-				return ft::random_iterator<const value_type>(_vec + _total);
+				return ft::vector_iterator<const value_type>(_vec + _total);
 			}
 
 			// RBEGIN
