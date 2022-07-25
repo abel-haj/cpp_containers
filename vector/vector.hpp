@@ -373,7 +373,7 @@ namespace ft {
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last)
 			{
-				int newcapacity;
+				size_type newcapacity;
 
 				newcapacity = last - first;
 
