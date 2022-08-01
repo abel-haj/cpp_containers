@@ -634,7 +634,6 @@ namespace ft {
 	}
 	//												//
 	//						SWAP					//
-	// # include "vector.tpp"
 
 };
 
