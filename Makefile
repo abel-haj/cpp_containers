@@ -1,7 +1,7 @@
 NAME			=	containers
 CC				=	c++
 CPPFLAGS		=	-std=c++98
-DFLAGS			=	-g #-fsanitize=address
+DFLAGS			=	-g -fsanitize=address
 # CFLAGS			=	-Wall -Wextra -Werror
 
 SRCS			=	main.cpp

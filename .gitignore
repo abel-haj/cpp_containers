@@ -37,4 +37,4 @@
 .vscode
 
 # Test files and directories 
-test*
+*test*
