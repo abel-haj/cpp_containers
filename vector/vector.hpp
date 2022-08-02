@@ -14,6 +14,8 @@
 # include "../other/reverse_iterator.hpp"
 # include "../other/enable_if.hpp"
 # include "../other/is_integral.hpp"
+# include "../other/equal.hpp"
+# include "../other/lexicographical_compare.hpp"
 
 #ifndef OUT
 	#define OUT 0
@@ -625,13 +627,51 @@ namespace ft {
 			//												//
 			//					ALLOCATOR					//
 
-			//			RELATIONAL OPERATORS				//
-			//												//
-			//												//
-			//			RELATIONAL OPERATORS				//
-
-
 	};
+
+	//			RELATIONAL OPERATORS				//
+	//												//
+	// (1)
+	template <class T, class Alloc>
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+
+		return equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
+	// (2)
+	template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+	// (3)
+	template <class T, class Alloc>
+	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+	// (4)
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (lhs == rhs) || (lhs < rhs);
+	}
+	// (5)
+	template <class T, class Alloc>
+	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+	// (6)
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (rhs <= lhs);
+	}
+	//												//
+	//			RELATIONAL OPERATORS				//
 
 	//						SWAP					//
 	//												//
