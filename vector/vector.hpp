@@ -76,7 +76,7 @@ namespace ft {
 				_vec = _alloc_type.allocate(n);
 				for (size_type i = 0; i < _capacity; i++)
 				{
-					_vec[i] = val;
+					_alloc_type.construct(_vec + i, val);
 					if (OUT)
 						std::cout << "ASSIGNING " << val << std::endl;
 					_total++;
@@ -108,7 +108,7 @@ namespace ft {
 
 				for (size_type i = _total; i < new_capacity; i++)
 				{
-					_vec[i] = *first;
+					_alloc_type.construct(_vec + i, *first);
 
 					first++;
 
@@ -134,7 +134,7 @@ namespace ft {
 				// copy
 				while (_total < x._total)
 				{
-					_vec[_total] = x[_total];
+					_alloc_type.construct(_vec + _total, x[_total]);
 					_total++;
 				}
 			}
@@ -178,7 +178,7 @@ namespace ft {
 				// copy
 				while (_total < x._total)
 				{
-					_vec[_total] = x[_total];
+					_alloc_type.construct(_vec + _total, x[_total]);
 					_total++;
 				}
 
@@ -213,12 +213,24 @@ namespace ft {
 			}
 
 			// RBEGIN
-			//       reverse_iterator rbegin(void);
-			// const_reverse_iterator rbegin(void) const;
+			      reverse_iterator rbegin(void)
+				  {
+					return reverse_iterator(this->end());
+				  }
+			const_reverse_iterator rbegin(void) const
+			{
+				return const_reverse_iterator(this->end());
+			}
 
 			// REND
-			//       reverse_iterator rend(void);
-			// const_reverse_iterator rend(void) const;
+			      reverse_iterator rend(void)
+				  {
+					return reverse_iterator(this->begin());
+				  }
+			const_reverse_iterator rend(void) const
+			{
+				return const_reverse_iterator(this->begin());
+			}
 			//														//
 			//						ITERATORS						//
 
@@ -244,13 +256,9 @@ namespace ft {
 					tmp = _alloc_type.allocate(n);
 
 					for  (size_type i=0; i<_total; i++)
-					{
-						tmp[i] = _vec[i];
-					}
+						_alloc_type.construct(tmp + i, _vec[i]);
 					for  (size_type i=_total; i<n; i++)
-					{
-						tmp[i] = val;
-					}
+						_alloc_type.construct(tmp + i, val);
 					_capacity = n;
 
 					_alloc_type.deallocate(_vec, _capacity);
@@ -269,11 +277,11 @@ namespace ft {
 
 					for (size_type i=0; i<_total; i++)
 					{
-						_vec[i] = tmp[i];
+						_alloc_type.construct(_vec + i, tmp[i]);
 					}
 					for (size_type i=_total; i<newcap; i++)
 					{
-						_vec[i] = val;
+						_alloc_type.construct(_vec + i, val);
 						_total++;
 					}
 
@@ -303,11 +311,11 @@ namespace ft {
 
 					for (size_type i=0; i<_total; i++)
 					{
-						_vec[i] = tmp[i];
+						_alloc_type.construct(_vec + i, tmp[i]);
 					}
 					for (size_type i=_total; i<n; i++)
 					{
-						_vec[i] = value_type();
+						_alloc_type.construct(_vec + i, value_type());
 					}
 
 					_alloc_type.deallocate(tmp, _capacity);
@@ -386,7 +394,7 @@ namespace ft {
 				_total = 0;
 				for (size_type i=0; i<newcapacity; i++)
 				{
-					_vec[i] = *first;
+					_alloc_type.construct(_vec + i, *first);
 					first++;
 					_total++;
 				}
@@ -407,7 +415,7 @@ namespace ft {
 				}
 				for (size_type i=0; i<n; i++)
 				{
-					_vec[i] = val;
+					_alloc_type.construct(_vec + i, val);
 					_total++;
 				}
 			}
@@ -417,7 +425,7 @@ namespace ft {
 			{
 				if (_total < _capacity)
 				{
-					_vec[_total] = val;
+					_alloc_type.construct(_vec + _total, val);
 					_total++;
 				}
 
@@ -427,7 +435,7 @@ namespace ft {
 					{
 						_alloc_type.deallocate(_vec, _capacity);
 						_vec = _alloc_type.allocate(1);
-						_vec[_total] = val;
+						_alloc_type.construct(_vec + _total, val);
 						_capacity = 1;
 						_total = 1;
 					}
@@ -441,9 +449,9 @@ namespace ft {
 
 						for (size_type i=0; i<_capacity; i++)
 						{
-							_vec[i] = tmp[i];
+							_alloc_type.construct(_vec + i, tmp[i]);
 						}
-						_vec[_total] = val;
+						_alloc_type.construct(_vec + _total, val);
 						_total++;
 						
 						_alloc_type.deallocate(tmp, _capacity);
@@ -471,10 +479,10 @@ namespace ft {
 
 					for (size_type i=_total; i>skip; i--)
 					{
-						_vec[i] = _vec[i - 1];
+						_alloc_type.construct(_vec + i, _vec[i - 1]);
 					}
 
-					_vec[skip] = val;
+					_alloc_type.construct(_vec + skip, val);
 					
 					_total++;
 					return _vec + skip;
@@ -491,15 +499,15 @@ namespace ft {
 
 					while (position != (_vec + a))
 					{
-						_vec[a] = tmp[a];
+						_alloc_type.construct(_vec + a, tmp[a]);
 						a++;
 					}
 
-					_vec[a] = val;
+					_alloc_type.construct(_vec + a, val);
 
 					for (size_t i=a+1; i<_total+1; i++)
 					{
-						_vec[i] = tmp[i - 1];
+						_alloc_type.construct(_vec + i, tmp[i - 1]);
 					}
 
 					_alloc_type.deallocate(tmp, _capacity);
@@ -541,7 +549,7 @@ namespace ft {
 				// _alloc_type.destroy(_vec[skip]);
 				for (size_type i=skip; i<_total-1; i++)
 				{
-					_vec[i] = _vec[i + 1];
+					_alloc_type.construct(_vec + i, _vec[i + 1]);
 				}
 				_total--;
 				return position++;
@@ -562,7 +570,7 @@ namespace ft {
 
 				while (last_ers < _total)
 				{
-					_vec[first_ers] = _vec[last_ers];
+					_alloc_type.construct(_vec + first_ers, _vec[last_ers]);
 					first_ers++;
 					last_ers++;
 				}
@@ -583,7 +591,7 @@ namespace ft {
 				_vec = _alloc_type.allocate(x.capacity());
 				for (size_type i = 0; i < x.size(); i++)
 				{
-					_vec[i] = x[i];
+					_alloc_type.construct(_vec + i, x[i]);
 				}
 				_total = x.size();
 				_capacity = x.capacity();
@@ -592,7 +600,7 @@ namespace ft {
 				x._vec = _alloc_type.allocate(cap);
 				for (size_type i = 0; i < tot; i++)
 				{
-					x[i] = tmp[i];
+					_alloc_type.construct(x + i, tmp[i]);
 				}
 				x._total = tot;
 				x._capacity = cap;
