@@ -308,48 +308,142 @@ int		main(void)
 
 
 	// // ----
-	ft::vector<int>swp1;
-	ft::vector<int>swp2;
+	// ft::vector<int>swp1;
+	// ft::vector<int>swp2;
 
-	swp1.push_back(1);
-	swp1.push_back(2);
-	swp1.push_back(3);
-	swp1.push_back(4);
+	// swp1.push_back(1);
+	// swp1.push_back(2);
+	// swp1.push_back(3);
+	// swp1.push_back(4);
 
-	swp2.push_back(2);
-	swp2.push_back(1);
+	// swp2.push_back(2);
+	// swp2.push_back(1);
 
-	std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
-	for (size_t i = 0; i < swp1.size(); i++)
-	{
-		std::cout << swp1[i] << " ";
-	}
-	std::cout << "\t\tSWAP 1" << std::endl;
-	std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
-	for (size_t i = 0; i < swp2.size(); i++)
-	{
-		std::cout << swp2[i] << " ";
-	}
-	std::cout << "\t\t\tSWAP 2" << std::endl;
-	std::cout << std::endl;
+	// std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
+	// for (size_t i = 0; i < swp1.size(); i++)
+	// {
+	// 	std::cout << swp1[i] << " ";
+	// }
+	// std::cout << "\t\tSWAP 1" << std::endl;
+	// std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
+	// for (size_t i = 0; i < swp2.size(); i++)
+	// {
+	// 	std::cout << swp2[i] << " ";
+	// }
+	// std::cout << "\t\t\tSWAP 2" << std::endl;
+	// std::cout << std::endl;
 
-	swp1.swap(swp2);
+	// swp1.swap(swp2);
 
-	std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
-	for (size_t i = 0; i < swp1.size(); i++)
-	{
-		std::cout << swp1[i] << " ";
-	}
-	std::cout << "\t\t\tSWAP 1" << std::endl;
-	std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
-	for (size_t i = 0; i < swp2.size(); i++)
-	{
-		std::cout << swp2[i] << " ";
-	}
-	std::cout << "\t\tSWAP 2" << std::endl;
-	std::cout << std::endl;
-	
+	// std::cout << "Capacity " << swp1.capacity() << " Size     " << swp1.size() << std::endl;
+	// for (size_t i = 0; i < swp1.size(); i++)
+	// {
+	// 	std::cout << swp1[i] << " ";
+	// }
+	// std::cout << "\t\t\tSWAP 1" << std::endl;
+	// std::cout << "Capacity " << swp2.capacity() << " Size     " << swp2.size() << std::endl;
+	// for (size_t i = 0; i < swp2.size(); i++)
+	// {
+	// 	std::cout << swp2[i] << " ";
+	// }
+	// std::cout << "\t\tSWAP 2" << std::endl;
+	// std::cout << std::endl;
 	// // ----
+
+
+	// // ---- REVERSE ITERATOR
+	// ft::vector<std::string> rev_vec;
+	// ft::vector<std::string>::iterator rev_vec_it;
+	// ft::vector<std::string>::reverse_iterator rev_it_begin;
+	// ft::vector<std::string>::reverse_iterator rev_it_end();
+
+	// rev_vec.push_back("one");
+	// rev_vec.push_back("two");
+	// rev_vec.push_back("three");
+	// rev_vec.push_back("four");
+	// rev_vec.push_back("five");
+
+	// rev_vec_it = rev_vec.begin();
+
+	// for (ft::vector<std::string>::iterator it=rev_vec_it; it!=rev_vec.end(); it++)
+	// {
+	// 	std::cout << *it << " ";
+	// }
+	// std::cout << std::endl;
+
+
+
+	// // TEST
+	// ft::vector<int> myvector1;
+	// for (int i=0; i<10; i++) myvector1.push_back(i);
+
+	// typedef ft::vector<int>::iterator iter_type1;
+
+	// ft::reverse_iterator<iter_type1> rev_begin1 (myvector1.end());
+	// ft::reverse_iterator<iter_type1> rev_end1 (myvector1.begin());
+
+	// ft::reverse_iterator<iter_type1> rev_iterator = rev_begin1;
+	// while ( rev_iterator != rev_end1 )
+	// 	std::cout << *rev_iterator++ << ' ';
+	// std::cout << '\n';
+
+	// while ( rev_iterator != rev_begin1 )
+	// 	std::cout << *(--rev_iterator) << ' ';
+	// std::cout << '\n';
+	// // TEST
+
+
+	// // OPERATOR+ NON MEMBER
+	// ft::vector<int> myvector2;
+	// for (int i=0; i<10; i++) myvector2.push_back(i);	// myvector2: 0 1 2 3 4 5 6 7 8 9
+
+	// typedef ft::vector<int>::iterator iter_type2;
+
+	// ft::reverse_iterator<iter_type2> rev_it2;
+
+	// rev_it2 = 3 + myvector2.rbegin();
+
+	// std::cout << "The fourth element from the end is: " << *rev_it2 << '\n';
+	// // OPERATOR+ NON MEMBER
+
+
+	// // OPERATOR- NON MEMBER
+	// ft::vector<int> myvector3;
+	// for (int i=0; i<10; i++) myvector3.push_back(i);
+
+	// ft::reverse_iterator<ft::vector<int>::iterator> from3,until3;
+
+	// from3 = myvector3.rbegin();
+	// until3 = myvector3.rend();
+
+	// std::cout << "myvector has " << (until3-from3) << " elements.\n";
+	// // OPERATOR- NON MEMBER
+
+
+	// // RELATIONAL OPERATORS NON MEMBER
+	// ft::vector<int> myvector4;
+	// for (int i=0; i<10; i++) myvector4.push_back(i);
+
+	// typedef ft::vector<int>::iterator iter_type4;
+
+	// iter_type4 from4 (myvector4.begin());
+	// iter_type4 until4 (myvector4.end());
+
+	// ft::reverse_iterator<iter_type4> rev_until4 (from4);
+	// ft::reverse_iterator<iter_type4> rev_from4 (until4);
+
+	// std::cout << "result " << (rev_until4 < rev_from4) << ".\n";
+	// std::cout << "result " << (rev_until4 <= rev_from4) << ".\n";
+	// std::cout << "result " << (rev_until4 > rev_from4) << ".\n";
+	// std::cout << "result " << (rev_until4 >= rev_from4) << ".\n";
+	// std::cout << "result " << (rev_until4 == rev_from4) << ".\n";
+	// std::cout << "result " << (rev_until4 != rev_from4) << ".\n";
+
+	// std::cout << "myvector4:";
+	// while (rev_from4 != rev_until4)
+	// 	std::cout << ' ' << *rev_from4++;
+	// std::cout << '\n';
+	// // RELATIONAL OPERATORS NON MEMBER
 
 	return 0;
 }
