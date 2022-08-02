@@ -94,9 +94,9 @@ namespace ft {
 			 * @param alloc 
 			 */
 			template <class InputIterator>
-			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type(),
-					typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type = InputIterator())
+			vector (typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type first,
+					InputIterator last,
+					const allocator_type& alloc = allocator_type())
 					: _capacity(0), _total(0)
 			{
 				if (OUT)
