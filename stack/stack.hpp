@@ -48,11 +48,11 @@ namespace ft {
 
 			value_type& top()
 			{
-				ct.back();
+				return ct.back();
 			}
 			const value_type& top() const
 			{
-				ct.back();
+				return ct.back();
 			}
 
 			// (1)
