@@ -192,24 +192,24 @@ namespace ft {
 			      iterator begin(void)
 			{
 				// const-qualified?
-				return ft::vector_iterator<value_type>(_vec);
+				return iterator(_vec);
 			}
 
 			const_iterator begin(void) const
 			{
-				return ft::vector_iterator<const value_type>(_vec);
+				return const_iterator(_vec);
 			}
 
 			// END
 			      iterator end(void)
 			{
 				// const-qualified?
-				return ft::vector_iterator<value_type>(_vec + _total);
+				return iterator(_vec + _total);
 			}
 
 			const_iterator end(void) const
 			{
-				return ft::vector_iterator<const value_type>(_vec + _total);
+				return const_iterator(_vec + _total);
 			}
 
 			// RBEGIN
