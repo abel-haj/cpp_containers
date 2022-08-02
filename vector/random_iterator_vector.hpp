@@ -10,6 +10,7 @@
 #endif
 
 namespace ft {
+
 	template <class T,											// iterator::value_type
 			class Category = std::random_access_iterator_tag,	// iterator::iterator_category
 			class Distance = ptrdiff_t,						// iterator::difference_type
@@ -169,17 +170,5 @@ namespace ft {
 	};
 
 }
-
-/*
-https://en.cppreference.com/w/cpp/language/operators
-
-https://stackoverflow.com/questions/68212323/implementing-an-iterator-something-like-from-stl-for-my-own-custom-vector-temp
-
-Is default-constructible, copy-constructible, copy-assignable and destructible
-
-X a;
-X b(a);
-b = a;
-*/
 
 #endif
