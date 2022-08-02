@@ -150,10 +150,11 @@ namespace ft {
 			{
 				if (OUT)
 					std::cout << "VECTOR DESTRUCTOR CALLED" << std::endl;
-				_alloc_type.deallocate(_vec, _capacity);
 
-				// TO VERIFY // recursive?
-				// _alloc_type.destroy(_vec);
+				for (size_type i=0; i<_total; i++)
+					_alloc_type.destroy(_vec + i);
+
+				_alloc_type.deallocate(_vec, _capacity);
 
 				_capacity = 0;
 				_total = 0;
