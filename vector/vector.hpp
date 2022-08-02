@@ -252,43 +252,37 @@ namespace ft {
 			void resize (size_type n, value_type val = value_type())
 			{
 				// reduce
-				if (_capacity > n)
+				if (_capacity >= n)
 				{
-					pointer tmp;
-					tmp = _alloc_type.allocate(n);
+					for (size_type i = _total; i < n; i++)
+						_alloc_type.construct(_vec + i, val);
 
-					for  (size_type i=0; i<_total; i++)
-						_alloc_type.construct(tmp + i, _vec[i]);
-					for  (size_type i=_total; i<n; i++)
-						_alloc_type.construct(tmp + i, val);
-					_capacity = n;
+					for (size_type i = n; i < _total; i++)
+						_alloc_type.destroy(_vec + i);
 
-					_alloc_type.deallocate(_vec, _capacity);
-					_vec = tmp;
+					_total = n;
 				}
 
 				// increase
-				else if (n > _capacity)
+				else
 				{
 					pointer tmp;
 					int newcap;
 
-					tmp = _vec;
 					newcap = (_capacity * 2) > n ? _capacity * 2 : n;
-					_vec = _alloc_type.allocate(newcap);
+					tmp = _alloc_type.allocate(newcap);
 
 					for (size_type i=0; i<_total; i++)
-					{
-						_alloc_type.construct(_vec + i, tmp[i]);
-					}
+						_alloc_type.construct(tmp + i, _vec[i]);
+
 					for (size_type i=_total; i<newcap; i++)
 					{
 						_alloc_type.construct(_vec + i, val);
-						_total++;
 					}
 
-					_alloc_type.deallocate(tmp, _capacity);
-					_capacity = n;
+					_alloc_type.deallocate(_vec, _capacity);
+					_total = _capacity = n;
+					_vec = tmp;
 				}
 			}
 
