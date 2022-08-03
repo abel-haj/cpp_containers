@@ -174,9 +174,14 @@ namespace ft {
 				// deallocate
 				_alloc_type.deallocate(_vec, _capacity);
 
+				// destroy
+				for (size_type i=0; i<_total; i++)
+					_alloc_type.destroy(_vec + i);
+
 				// allocate
 				_vec = _alloc_type.allocate(x._capacity);
 				_capacity = x._capacity;
+				_total = 0;
 
 				// copy
 				while (_total < x._total)
@@ -268,7 +273,7 @@ namespace ft {
 				else
 				{
 					pointer tmp;
-					int newcap;
+					size_type newcap;
 
 					newcap = (_capacity * 2) > n ? _capacity * 2 : n;
 					tmp = _alloc_type.allocate(newcap);
@@ -277,9 +282,7 @@ namespace ft {
 						_alloc_type.construct(tmp + i, _vec[i]);
 
 					for (size_type i=_total; i<newcap; i++)
-					{
-						_alloc_type.construct(_vec + i, val);
-					}
+						_alloc_type.construct(tmp + i, val);
 
 					_alloc_type.deallocate(_vec, _capacity);
 					_total = _capacity = n;
@@ -307,13 +310,10 @@ namespace ft {
 					_vec = _alloc_type.allocate(n);
 
 					for (size_type i=0; i<_total; i++)
-					{
 						_alloc_type.construct(_vec + i, tmp[i]);
-					}
+
 					for (size_type i=_total; i<n; i++)
-					{
 						_alloc_type.construct(_vec + i, value_type());
-					}
 
 					_alloc_type.deallocate(tmp, _capacity);
 					_capacity = n;
@@ -469,15 +469,15 @@ namespace ft {
 				if (_capacity > _total)
 				{
 					size_type skip = 0;
-					while (position != (_vec + skip))
+					iterator tmp(_vec);
+					while (position != iterator(_vec + skip))
 					{
+						tmp++;
 						skip++;
 					}
 
 					for (size_type i=_total; i>skip; i--)
-					{
 						_alloc_type.construct(_vec + i, _vec[i - 1]);
-					}
 
 					_alloc_type.construct(_vec + skip, val);
 					
@@ -487,83 +487,135 @@ namespace ft {
 
 				// there is no room
 				else
-				{
+				 {
 					pointer tmp;
-					size_type a = 0;
+					size_type newcapacity;
+					size_type pos_at = position - this->begin();
 
-					tmp = _vec;
-					_vec = _alloc_type.allocate(_capacity == 0 ? 1 : _capacity * 2);
+					newcapacity = _capacity == 0 ? 1 : _capacity * 2;
+					tmp = _alloc_type.allocate(newcapacity);
 
-					while (position != (_vec + a))
-					{
-						_alloc_type.construct(_vec + a, tmp[a]);
-						a++;
-					}
+					for (size_type i=0; i<pos_at; i++)
+						_alloc_type.construct(tmp + i, _vec[i]);
+					_alloc_type.construct(tmp + pos_at, val);
+					for (size_type i=pos_at+1; i<_total+1; i++)
+						_alloc_type.construct(tmp + i, _vec[i - 1]);
 
-					_alloc_type.construct(_vec + a, val);
-
-					for (size_t i=a+1; i<_total+1; i++)
-					{
-						_alloc_type.construct(_vec + i, tmp[i - 1]);
-					}
-
-					_alloc_type.deallocate(tmp, _capacity);
-					_total++;
-					_capacity++;
-
-					return _vec + a;
+					_alloc_type.deallocate(_vec, _capacity);
+					_capacity = newcapacity;
+					_total += 1;
+					_vec = tmp;
+					return (_vec + pos_at);
 				}
 			}
 			// fill (2)
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				for (size_type i = 0; i < n; i++)
+				// there is room
+				if (_capacity >= _total + n)
 				{
-					this->insert(position, val);
+					for (size_type i = 0; i < n; i++)
+						this->insert(position, val);
+				}
+
+				// there aint
+				else
+				{
+					size_type newcapacity;
+					size_type pos_at;
+					pointer tmp;
+
+					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
+					pos_at = position - this->begin();
+
+					tmp = _alloc_type.allocate(newcapacity);
+
+					for (size_type i=0; i<pos_at; i++)
+						_alloc_type.construct(tmp + i, _vec[i]);
+
+					for (size_type i=pos_at; i<pos_at + n; i++)
+						_alloc_type.construct(tmp + i, val);
+
+					for (size_type i=pos_at+n; i<_total+n; i++)
+						_alloc_type.construct(tmp + i, _vec[i - n]);
+
+					_alloc_type.deallocate(_vec, _capacity);
+					_vec = tmp;
+					_total += n;
+					_capacity = newcapacity;
 				}
 			}
 			// range (3)
 			template <class InputIterator>
 			void insert (iterator position, InputIterator first,
 				typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type last)
-				// InputIterator last)
 			{
-				while (first != last)
+				size_type n;
+
+				n = last - first;
+
+				// there is room
+				if (_capacity >= _total + n)
 				{
-					this->insert(position, *first);
-					position++;
-					first++;
+					while (first != last)
+					{
+						this->insert(position, *first);
+						first++;
+					}
+				}
+
+				// there is not
+				else
+				{
+					size_type newcapacity;
+					size_type pos_at;
+					pointer tmp;
+
+					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
+					pos_at = position - this->begin();
+
+					tmp = _alloc_type.allocate(newcapacity);
+
+					for (size_type i=0; i<pos_at; i++)
+						_alloc_type.construct(tmp + i, _vec[i]);
+
+					for (size_type i=pos_at; i<pos_at+n; i++)
+					{
+						_alloc_type.construct(tmp + i, *first);
+						first++;
+					}
+
+					for (size_type i=pos_at+n; i<_total+n; i++)
+						_alloc_type.construct(tmp + i, _vec[i - n]);
+
+					_alloc_type.deallocate(_vec, _capacity);
+					_vec = tmp;
+					_total += n;
+					_capacity = newcapacity;
 				}
 			}
 
 			iterator erase (iterator position)
 			{
 				size_type skip = 0;
-				while (position != (_vec + skip))
-				{
+				while (position != iterator(_vec + skip))
 					skip++;
-				}
-				// _alloc_type.destroy(_vec[skip]);
+
 				for (size_type i=skip; i<_total-1; i++)
-				{
 					_alloc_type.construct(_vec + i, _vec[i + 1]);
-				}
+
 				_total--;
 				return position++;
 			}
 			iterator erase (iterator first, iterator last)
 			{
 				size_type first_ers = 0;
-				while (first != (_vec + first_ers))
-				{
+				while (first != iterator(_vec + first_ers))
 					first_ers++;
-				}
 
 				size_type last_ers = first_ers;
-				while (last != (_vec + last_ers))
-				{
+				while (last != iterator(_vec + last_ers))
 					last_ers++;
-				}
 
 				while (last_ers < _total)
 				{
@@ -573,7 +625,7 @@ namespace ft {
 				}
 
 				_total = _total - (last - first);
-				return last - first_ers;
+				return first;
 			}
 
 			void swap (vector& x)
@@ -585,24 +637,14 @@ namespace ft {
 				tmp = _vec;
 				tot = _total;
 				cap = _capacity;
-				_vec = _alloc_type.allocate(x.capacity());
-				for (size_type i = 0; i < x.size(); i++)
-				{
-					_alloc_type.construct(_vec + i, x[i]);
-				}
+
 				_total = x.size();
 				_capacity = x.capacity();
+				_vec = x._vec;
 
-				_alloc_type.deallocate(x._vec, x.capacity());
-				x._vec = _alloc_type.allocate(cap);
-				for (size_type i = 0; i < tot; i++)
-				{
-					_alloc_type.construct(x + i, tmp[i]);
-				}
 				x._total = tot;
 				x._capacity = cap;
-
-				_alloc_type.deallocate(tmp, cap);
+				x._vec = tmp;
 			}
 
 			void clear(void)
