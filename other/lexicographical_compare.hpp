@@ -21,7 +21,7 @@ namespace ft {
 											first1++;
 											first2++;
 										}
-										return false;
+										return (first2!=last2);
 									}
 	// custom (2)	
 	template <class InputIterator1, class InputIterator2, class Compare>
