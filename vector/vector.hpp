@@ -633,7 +633,7 @@ namespace ft {
 		if (lhs.size() != rhs.size())
 			return false;
 
-		return equal(lhs.begin(), lhs.end(), rhs.begin());
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 	// (2)
 	template <class T, class Alloc>
@@ -645,7 +645,7 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	// (4)
 	template <class T, class Alloc>
