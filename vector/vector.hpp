@@ -465,48 +465,23 @@ namespace ft {
 			// single element (1)
 			iterator insert (iterator position, const value_type& val)
 			{
-				// there is room
-				if (_capacity > _total)
+				size_type dist;
+
+				if ( _capacity == _total )
 				{
-					size_type skip = 0;
-					iterator tmp(_vec);
-					while (position != iterator(_vec + skip))
-					{
-						tmp++;
-						skip++;
-					}
-
-					for (size_type i=_total; i>skip; i--)
-						_alloc_type.construct(_vec + i, _vec[i - 1]);
-
-					_alloc_type.construct(_vec + skip, val);
-					
-					_total++;
-					return _vec + skip;
+					if ( _capacity == 0 )
+						this->resize(1);
+					else
+						this->resize(_capacity * 2);
 				}
 
-				// there is no room
-				else
-				 {
-					pointer tmp;
-					size_type newcapacity;
-					size_type pos_at = position - this->begin();
+				dist = this->end() - position;
 
-					newcapacity = _capacity == 0 ? 1 : _capacity * 2;
-					tmp = _alloc_type.allocate(newcapacity);
+				for (size_type i=0; i<dist; i++)
+					_vec[i] = _vec[_total - i - 1];
 
-					for (size_type i=0; i<pos_at; i++)
-						_alloc_type.construct(tmp + i, _vec[i]);
-					_alloc_type.construct(tmp + pos_at, val);
-					for (size_type i=pos_at+1; i<_total+1; i++)
-						_alloc_type.construct(tmp + i, _vec[i - 1]);
-
-					_alloc_type.deallocate(_vec, _capacity);
-					_capacity = newcapacity;
-					_total += 1;
-					_vec = tmp;
-					return (_vec + pos_at);
-				}
+				_alloc_type.construct(_vec - dist, val);
+				return this->begin() - dist;
 			}
 			// fill (2)
 			void insert (iterator position, size_type n, const value_type& val)
