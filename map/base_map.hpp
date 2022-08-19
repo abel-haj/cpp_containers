@@ -127,9 +127,10 @@ namespace ft {
 
 			node_type * deepest_left(node_type * n)
 			{
-				while (n->left != NULL)
-				{
-					n = n->left;
+				if (n)
+					while (n->left != NULL)
+						n = n->left;
+				return n;
 				}
 				return n;
 			}
