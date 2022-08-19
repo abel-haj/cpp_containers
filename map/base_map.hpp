@@ -93,7 +93,7 @@ namespace ft {
 						else
 						{
 							std::cout << "T3" << std::endl;
-							node_type * tmp = smallest_left(pos->right);
+							node_type * tmp = deepest_left(pos->right);
 							pos->current = tmp->current;
 							pos->right = erase_wrap(pos->right, tmp->current->first);
 						}
@@ -125,7 +125,7 @@ namespace ft {
 				return pos;
 			}
 
-			node_type * smallest_left(node_type * n)
+			node_type * deepest_left(node_type * n)
 			{
 				while (n->left != NULL)
 				{
