@@ -131,7 +131,12 @@ namespace ft {
 					while (n->left != NULL)
 						n = n->left;
 				return n;
-				}
+			}
+			node_type * deepest_right(node_type * n)
+			{
+				if (n)
+					while (n->right != NULL)
+						n = n->right;
 				return n;
 			}
 
