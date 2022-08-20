@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "map.hpp"
-#include "AVL_Node.hpp"
 #include "../pair/make_pair.hpp"
 
 std::pair<int, int> func()
@@ -11,7 +10,7 @@ std::pair<int, int> func()
 	return std::make_pair('a', 2.0f);
 }
 
-int		main()
+void	ft_main()
 {
 	ft::map<int, std::string> m1;
 	ft::pair<int, std::string> pn1(-1, "N one");
@@ -91,14 +90,27 @@ int		main()
 	// // ---------
 	m1.insert(p1);
 	m1.insert(p2);
-	m1.insert(p5);
+	m1.insert(p10);
+	// m1.insert(p7);
 	m1.insert(p4);
 	m1.insert(p9);
 	m1.insert(p3);
-	m1.insert(p7);
+	m1.insert(p8);
+	m1.insert(p5);
+	m1.insert(p6);
+	// m1.insert(p7);
+	// m1.insert(p7);
+	std::cout << "inserted? = " << m1.insert(p0).second << std::endl;
+	// std::cout << "inserted? = " << m1.insert(p2).second << std::endl;
+	// std::cout << "inserted? = " << m1.insert(p0).second << std::endl;
+	// m1.insert(p0);
 
 	m1.print();
-	m1.erase(p4.first);
+	// // m1.erase(p7.first);
+	// // p0.second = "hundred";
+	std::cout << "erase " << m1.erase(p0.first) << std::endl;
+	std::cout << "erase " << m1.erase(p1.first) << std::endl;
+	std::cout << "erase " << m1.erase(p2.first) << std::endl;
 	m1.print();
 	// ---------------- DELETE
 
@@ -115,32 +127,13 @@ int		main()
 	// std::less<int> comp;
 	// std::cout << comp(1, 2) << std::endl;
 	// std::cout << comp(2, 1) << std::endl;
-
-	return 0;
 }
 
 
-// int		main()
-// {
-// 	// ft::avl_node<int, int> n1;
-// 	// ft::avl_node<int, int> n2;
-// 	// ft::avl_node<int, int> n3;
-
-// 	// n1.right(&n2);
-// 	// n1.left(&n3);
-
-// 	ft::map<int, std::string> m1;
-
-// 	m1.insert(ft::make_pair(1, "one"));
-// 	// m1.insert(ft::make_pair(2, "two"));
-// 	// m1.insert(ft::make_pair(3, "three"));
-// 	// m1.insert(ft::make_pair(4, "four"));
-
-// 	std::pair<int, std::string> p;
-// 	p.first = 1;
-// 	p.second = "one";
-
-// 	// m1.insert(p);
-
-// 	return 0;
-// }
+int		main()
+{
+	ft_main();
+	std::map<int,int> m;
+	system("leaks a.out");
+	return 0;
+}
