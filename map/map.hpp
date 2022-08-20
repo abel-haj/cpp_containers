@@ -106,14 +106,11 @@ namespace ft {
 
 			// [ MODIFIERS ]
 			// single element (1)
-			// pair<iterator,bool> insert (const value_type& val);
-			void insert (const value_type& val)
+			pair<int,bool> insert (const value_type& val)
 			{
-				_base_map.insert(val);
+				// return ft::make_pair(iterator(), _base_map.insert(val));
+				return ft::make_pair(0, _base_map.insert(val));
 			}
-			// {
-			// 	return 
-			// }
 			// with hint (2)
 			// iterator insert (iterator position, const value_type& val);
 			// range (3)
@@ -125,8 +122,7 @@ namespace ft {
 			// (2)
 			size_type erase (const key_type& k)
 			{
-				_base_map.erase(k);
-				return 0;
+				return _base_map.erase(k);
 			}
 			// (3)
 			// void erase (iterator first, iterator last);
