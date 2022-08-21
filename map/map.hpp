@@ -26,12 +26,12 @@ namespace ft {
 			typedef				Alloc										allocator_type;
 			typedef				ft::pair<const key_type, mapped_type>		value_type;
 			typedef				Avl_Node<value_type>						node_type;
-			typedef				ft::avl_tree<key_type, mapped_type, key_compare>	base_map;
+			typedef				ft::avl_tree<key_type, mapped_type, key_compare, Alloc>	base_map;
 			typedef typename	allocator_type::reference					reference;
 			typedef typename	allocator_type::const_reference				const_reference;
 			typedef typename	allocator_type::pointer						pointer;
 			typedef typename	allocator_type::const_pointer				const_pointer;
-			typedef typename	ft::map_iterator<base_map, node_type, value_type>	iterator;
+			typedef typename	ft::map_iterator<node_type, value_type>		iterator;
 			// typedef			const_iterator;
 			// typedef			reverese_iterator;
 			// typedef			const_reverese_iterator;
@@ -77,7 +77,10 @@ namespace ft {
 			// [ COPY CONSTRUCTOR ]
 
 			// [ ITERATORS ]
-			// 	  iterator begin();
+				  iterator begin()
+				{
+					return iterator(_base_map->_top, _base_map->_top, _base_map->deepest_left(_base_map->_top));
+				}
 			// const_iterator begin() const;
 
 			// 	  iterator end();

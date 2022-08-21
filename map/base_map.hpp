@@ -12,8 +12,8 @@ namespace ft {
 
 	template < class Key,										// map::key_type
 				class T,										// map::mapped_type
-				class Compare = std::less<Key>					// map::key_compare>
-				// , class Alloc = std::allocator::template rebind<Avl_Node<ft::pair<const key_type, mapped_type>> >
+				class Compare,									// map::key_compare>
+				class Alloc
 				>
 	class avl_tree {
 
@@ -28,16 +28,46 @@ namespace ft {
 		private:
 			key_compare								_comp_func;
 			node_type *								_top;
-			std::allocator< Avl_Node<value_type> >	_alloc_node;
+			node_type *								_last;
+			// std::allocator< Avl_Node<value_type> >	_alloc_node;
+			typename Alloc::template rebind< Avl_Node<value_type> >::other	_alloc_node;
 
 		public:
-			avl_tree () : _top(NULL) {}
+			avl_tree () : _top(NULL)
+			{
+				// _alloc_node.
+			}
 			~avl_tree ()
 			{
 				if (_top)
 					delete_tree(_top);
+				if (_last)
+					delete_tree(_last);
 			}
 
+			void print()
+			{
+				std::cout << std::endl;
+				std::cout << "------------" << std::endl;
+
+				printBT("", _top, false);
+				check_balance(_top);
+			}
+			size_type erase (const key_type& k)
+			{
+				return erase_wrap(_top, k);
+			}
+			bool insert (const value_type& val)
+			{
+				bool ret;
+
+				ret = insert_wrap(_top, val, NULL);
+
+				return ret;
+				// return insert_wrap_2(_top, val);
+			}
+
+		private:
 			void delete_tree(node_type * pos)
 			{
 				if (pos->left)
@@ -48,10 +78,6 @@ namespace ft {
 				_alloc_node.deallocate(pos, 1);
 			}
 
-			size_type erase (const key_type& k)
-			{
-				return erase_wrap(_top, k);
-			}
 			size_type erase_wrap (node_type *& pos, const key_type& k)
 			{
 				size_type ret = 0;
@@ -143,11 +169,6 @@ namespace ft {
 				return ret;
 			}
 
-			bool insert (const value_type& val)
-			{
-				return insert_wrap(_top, val, NULL);
-				return insert_wrap_2(_top, val);
-			}
 			bool insert_wrap (node_type *& pos, const value_type& val, node_type * p)
 			{
 				node_type	new_node(val);
@@ -399,14 +420,6 @@ namespace ft {
 				return 0;
 			}
 
-			void print()
-			{
-				std::cout << std::endl;
-				std::cout << "------------" << std::endl;
-
-				printBT("", _top, false);
-				check_balance(_top);
-			}
 			void printBT(const std::string& prefix, const node_type* node, bool isLeft)
 			{
 				if( node != NULL )
