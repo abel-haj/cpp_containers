@@ -28,7 +28,7 @@ namespace ft {
 
 		public:
 			typedef				T											value_type; // The first template parameter (T)
-			typedef				std::allocator<value_type>					allocator_type; // The second template parameter (Alloc)
+			typedef				Alloc										allocator_type; // The second template parameter (Alloc)
 			typedef	typename	allocator_type::reference					reference; // allocator_type::reference
 			typedef	typename	allocator_type::const_reference				const_reference; // allocator_type::const_reference
 			typedef	typename	allocator_type::pointer						pointer; // allocator_type::pointer
