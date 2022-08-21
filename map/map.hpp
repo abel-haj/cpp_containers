@@ -22,34 +22,32 @@ namespace ft {
 		public:
 			typedef				Key											key_type;
 			typedef				T											mapped_type;
-			typedef				ft::pair<const key_type, mapped_type>		value_type;
-			typedef				Avl_Node<value_type>						node_type;
 			typedef				Compare										key_compare;
 			typedef				Alloc										allocator_type;
+			typedef				ft::pair<const key_type, mapped_type>		value_type;
+			typedef				Avl_Node<value_type>						node_type;
+			typedef				ft::avl_tree<key_type, mapped_type, key_compare>	base_map;
 			typedef typename	allocator_type::reference					reference;
 			typedef typename	allocator_type::const_reference				const_reference;
 			typedef typename	allocator_type::pointer						pointer;
 			typedef typename	allocator_type::const_pointer				const_pointer;
-			typedef				map_iterator<pointer>						iterator;
+			typedef typename	ft::map_iterator<base_map, node_type, value_type>	iterator;
 			// typedef			const_iterator;
 			// typedef			reverese_iterator;
 			// typedef			const_reverese_iterator;
 			// typedef typename	iterator_traits<iterator>::difference_type	difference_type;
 			typedef				size_t										size_type;
-			typedef				ft::avl_tree<key_type, mapped_type, key_compare>	base_map;
 
 		private:
-			size_type		_size;
-			allocator_type	_alloc_type;
-			key_compare		_comp_func;
+			size_type					_size;
+			allocator_type				_alloc_type;
+			key_compare					_comp_func;
 			std::allocator< node_type >	_alloc_node;
-			base_map		_base_map;
+			base_map					_base_map;
 
 		public:
 			void print()
 			{
-				std::cout << std::endl;
-				std::cout << "------------" << std::endl;
 				_base_map.print();
 			}
 
@@ -67,7 +65,7 @@ namespace ft {
 				// : _alloc_type(alloc), _comp_func(comp)
 				// {}
 			// copy (3)
-			map (const map& x);
+			map (const map& x); // elements // allocator // comparator
 			// [ CONSTRUCTORS ]
 
 			// [ DESTRUCTOR ]
