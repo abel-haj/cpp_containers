@@ -25,17 +25,36 @@ void	ft_main()
 	ft::pair<int, std::string> p8(8, "eight");
 	ft::pair<int, std::string> p9(9, "nine");
 	ft::pair<int, std::string> p10(10, "ten");
+	ft::pair<int, std::string> p11(11, "eleven");
+	ft::pair<int, std::string> p12(12, "twelve");
+	ft::pair<int, std::string> p13(13, "thirteen");
+	ft::pair<int, std::string> p14(14, "fourteen");
+	ft::pair<int, std::string> p15(15, "fifteen");
+	ft::pair<int, std::string> p16(16, "sixteen");
+	ft::pair<int, std::string> p17(17, "seventeen");
 
+	m1.insert(p0);
 	m1.insert(p1);
 	m1.insert(p2);
 	m1.insert(p4);
 	m1.insert(p3);
-	m1.insert(p0);
 	m1.insert(p5);
+	m1.insert(p6);
+	m1.insert(p7);
+	m1.insert(p8);
+	m1.insert(p9);
+	m1.insert(p10);
+	m1.insert(p11);
+	m1.insert(p12);
+	m1.insert(p13);
+	m1.insert(p14);
+	m1.insert(p15);
+	m1.insert(p16);
+	m1.insert(p17);
 
-	m1.insert(p3);
-	m1.insert(p2);
-	m1.insert(p1);
+	// m1.insert(p3);
+	// m1.insert(p2);
+	// m1.insert(p1);
 
 	// m1.insert(p1);
 	// m1.insert(p2);
@@ -54,13 +73,8 @@ void	ft_main()
 	// m1.insert(p2);
 	// m1.insert(p5);
 	// m1.insert(p4);
-	// m1.insert(p9);
 	// m1.insert(p3);
-	// m1.insert(p7);
 	// m1.insert(p0);
-	// m1.insert(p6);
-	// m1.insert(p8);
-	// m1.insert(p10);
 
 	// m1.print();
 
@@ -132,9 +146,90 @@ void	ft_main()
 	// // ---------------- LESS
 
 
-	// ---------------- ITERATOR
-	// m1.print();
-	// ---------------- ITERATOR
+	// // ---------------- ITERATOR
+	{
+	m1.print();
+	ft::map<int, std::string>::iterator it = m1.begin();
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	++it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+
+	std::cout << std::endl;
+
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+	--it;
+	std::cout << (*it).first << " - " << (*it).second << std::endl;
+
+	// std::map<int , int>::iterator::
+	// getchar();
+	// ++it;
+	// std::cout << (*it).first << " - " << (*it).second << std::endl;
+	}
+	// // ---------------- ITERATOR
 }
 
 
