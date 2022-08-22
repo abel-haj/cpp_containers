@@ -25,24 +25,27 @@ namespace ft {
 			typedef				Compare										key_compare;
 			typedef				size_t										size_type;
 
-		private:
-			key_compare								_comp_func;
 			node_type *								_top;
 			node_type *								_last;
-			// std::allocator< Avl_Node<value_type> >	_alloc_node;
+
+		private:
+			key_compare								_comp_func;
 			typename Alloc::template rebind< Avl_Node<value_type> >::other	_alloc_node;
 
 		public:
 			avl_tree () : _top(NULL)
 			{
-				// _alloc_node.
+				_last = _alloc_node.allocate(1);
 			}
 			~avl_tree ()
 			{
-				if (_top)
-					delete_tree(_top);
+				// if (_top)
+				// 	delete_tree(_top);
 				if (_last)
-					delete_tree(_last);
+				{
+					_alloc_node.deallocate(_last, 1);
+					_last = NULL;
+				}
 			}
 
 			void print()
@@ -55,16 +58,45 @@ namespace ft {
 			}
 			size_type erase (const key_type& k)
 			{
-				return erase_wrap(_top, k);
+				size_type ret = erase_wrap(_top, k);
+				_last->parent = deepest_right(_top);
+
+				return ret;
 			}
 			bool insert (const value_type& val)
 			{
 				bool ret;
 
 				ret = insert_wrap(_top, val, NULL);
+				_last->parent = deepest_right(_top);
 
 				return ret;
-				// return insert_wrap_2(_top, val);
+			}
+
+			node_type * deepest_left(node_type * n)
+			{
+				if (n)
+					while (n->left != NULL)
+						n = n->left;
+				return n;
+			}
+
+			node_type * find(const key_type& k)
+			{
+				return find_wrap(_top, k);
+			}
+			node_type * find_wrap(node_type * pos, const key_type& k)
+			{
+				node_type * ret = _last;
+				if (!pos)
+					return ret;
+				else if (pos && _comp_func(pos->current->first, k) )
+					ret = find_wrap(pos->right, k);
+				else if (pos &&  _comp_func(k, pos->current->first) )
+					ret = find_wrap(pos->left, k);
+				else if(k == pos->current->first)
+					return pos;
+				return ret;
 			}
 
 		private:
@@ -76,6 +108,7 @@ namespace ft {
 					delete_tree(pos->right);
 
 				_alloc_node.deallocate(pos, 1);
+				pos = NULL;
 			}
 
 			size_type erase_wrap (node_type *& pos, const key_type& k)
@@ -153,18 +186,24 @@ namespace ft {
 
 					// LEFT LEFT : RIGHT ROTATION
 					if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-						right_rotation(pos);
+						pos = right_rotation(pos);
 
 					// RIGHT RIGHT : LEFT ROTATION
 					else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-						left_rotation(pos);
+						pos = left_rotation(pos);
 
 					// LEFT RIGHT
 					else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-						left_right_rotation(pos);
+					{
+						pos->left = left_rotation(pos->left);
+						pos = right_rotation(pos);
+					}
 
 					else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-						right_left_rotation(pos);
+					{
+						pos->right = right_rotation(pos->right);
+						pos = left_rotation(pos);
+					}
 				}
 				return ret;
 			}
@@ -177,8 +216,8 @@ namespace ft {
 				if ( pos == NULL )
 				{
 					pos = _alloc_node.allocate(1);
-					pos->parent = p;
 					_alloc_node.construct(pos, val);
+					pos->parent = p;
 					return true;
 				}
 
@@ -203,18 +242,24 @@ namespace ft {
 
 					// LEFT LEFT : RIGHT ROTATION
 					if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-						right_rotation(pos);
+						pos = right_rotation(pos);
 
 					// RIGHT RIGHT : LEFT ROTATION
 					else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-						left_rotation(pos);
+						pos = left_rotation(pos);
 
 					// LEFT RIGHT
 					else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-						left_right_rotation(pos);
+					{
+						pos->left = left_rotation(pos->left);
+						pos = right_rotation(pos);
+					}
 
 					else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-						right_left_rotation(pos);
+					{
+						pos->right = right_rotation(pos->right);
+						pos = left_rotation(pos);
+					}
 				}
 
 				return ret;
@@ -309,13 +354,6 @@ namespace ft {
 					right_left_rotation(pos);
 			}
 
-			node_type * deepest_left(node_type * n)
-			{
-				if (n)
-					while (n->left != NULL)
-						n = n->left;
-				return n;
-			}
 			node_type * deepest_right(node_type * n)
 			{
 				if (n)
@@ -324,86 +362,67 @@ namespace ft {
 				return n;
 			}
 
-			void left_right_rotation(node_type * & n)
+			node_type * right_rotation(node_type * y)
 			{
-				// A
-				node_type * tmp_left = n->left;
-				// B
-				node_type * tmp_right = n->left->right;
-				// C
-				n->left = tmp_right;
+				node_type * x = y->left;
+				node_type * T2 = x->right;
 
-				node_type * tmp_right_l = tmp_right->left;
-				tmp_right->left = tmp_left;
-				tmp_right->parent = n;
+				x->right = y;
+				y->left = T2;
+				parent_correction(x, y->parent);
 
-				tmp_left->right = tmp_right_l;
-				tmp_left->parent = tmp_right;
+				if (x->right)
+					x->right->height = cal_height(x->right);
+				if (x->left)
+					x->left->height = cal_height(x->left);
+				x->height =  cal_height(x);
 
-				right_rotation(n);
+				return x;
 			}
 
-			void right_left_rotation(node_type * & n)
+			node_type * left_rotation(node_type * x)
 			{
-				// A
-				node_type * tmp_right = n->right;
-				// B
-				node_type * tmp_left = n->right->left;
-				// C
-				n->right = tmp_left;
+				node_type * y = x->right;
+				node_type * T2 = y->left;
 
-				node_type * tmp_left_r = tmp_left->right;
-				tmp_left->right = tmp_right;
-				tmp_left->parent = n;
+				y->left = x;
+				x->right = T2;
+				parent_correction(y, x->parent);
 
-				tmp_right->left = tmp_left_r;
-				tmp_right->parent = tmp_left;
+				if (y->left)
+					y->left->height = cal_height(y->left);
+				if (y->right)
+					y->right->height = cal_height(y->right);
+				y->height = cal_height(y);
 
-				left_rotation(n);
+				return y;
 			}
 
-			void right_rotation(node_type * & n)
+			int cal_height(node_type *r)
 			{
-				node_type * tmp_l = n->left;
-				node_type * tmp_l_r = tmp_l->right;
-				node_type * tmp_p = n->parent;
-
-				tmp_l->right = n;
-				n->left = tmp_l_r;
-				n->parent = tmp_l;
-				n = tmp_l;
-
-				n->parent = tmp_p;
-				if (tmp_p)
-					tmp_p->right = n;
-				if (tmp_p)
-					std::cout << tmp_p->current->second << std::endl;
-
-				n->right->height = 1 + std::max(get_height(n->right->left), get_height(n->right->right));
-				n->left->height = 1 + std::max(get_height(n->left->left), get_height(n->left->right));
-				n->height = 1 + std::max(get_height(n->left), get_height(n->right));
+				if (r->right && r->left)
+				{
+					if (r->left->height < r->right->height)
+						return r->right->height  + 1;
+					else
+						return r->left->height + 1;
+				}
+				else if(r->right && r->left == NULL)
+				{
+						return r->right->height + 1;
+				}
+				else if (r->right == NULL && r->left)
+					return r->left->height + 1;
+				return 1;
 			}
 
-			void left_rotation(node_type * & n)
+			void parent_correction(node_type *&n, node_type *p)
 			{
-				node_type * tmp_r = n->right;
-				node_type * tmp_r_l = tmp_r->left;
-				node_type * tmp_p = n->parent;
-
-				tmp_r->left = n;
-				n->right = tmp_r_l;
-				n->parent = tmp_r;
-				n = tmp_r;
-
-				n->parent = tmp_p;
-				if (tmp_p)
-					tmp_p->left = n;
-				if (tmp_p)
-					std::cout << tmp_p->current->second << std::endl;
-
-				n->right->height = 1 + std::max(get_height(n->right->left), get_height(n->right->right));
-				n->left->height = 1 + std::max(get_height(n->left->left), get_height(n->left->right));
-				n->height = 1 + std::max(get_height(n->left), get_height(n->right));
+				if (n == NULL)
+					return ;
+				parent_correction(n->right, n);
+				n->parent = p;
+				parent_correction(n->left, n);
 			}
 
 			size_type get_height(node_type * n)
@@ -432,7 +451,11 @@ namespace ft {
 					std::cout << node->height << " : "
 					<< "[" << node->current->first
 					<< ":" << node->current->second
-					<< "]" << std::endl;
+					<< "]"
+					// << " p " << node->parent
+					// << " l " << node->left
+					// << " r " << node->right
+					<< std::endl;
 
 					// enter the next tree level - left and right branch
 					printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
