@@ -10,6 +10,7 @@
 # include "base_map.hpp"
 # include "bidirectional_iterator_map.hpp"
 # include "../other/equal.hpp"
+# include "../other/lexicographical_compare.hpp"
 
 namespace ft {
 
