@@ -2,6 +2,8 @@
 # define	VECTOR_HPP
 
 // # include <iostream>
+// ptrdiff_t
+# include <cstddef>
 // allocator
 # include <memory>
 // vector iterator

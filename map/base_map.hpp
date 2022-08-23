@@ -6,6 +6,7 @@
 # include "../other/iterator_traits.hpp"
 # include <functional> // less
 # include <memory> // allocator
+# include <algorithm> // max
 # include "map_node.hpp"
 
 namespace ft {
