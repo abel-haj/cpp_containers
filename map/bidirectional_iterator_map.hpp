@@ -14,21 +14,22 @@ namespace ft {
 		typedef typename ft::map_iterator_traits<T*>::difference_type	difference_type;
 		typedef typename ft::map_iterator_traits<T*>::pointer			pointer;
 		typedef typename ft::map_iterator_traits<T*>::reference			reference;
+		typedef map_iterator<Node, const T>								const_iterator;
 
 		// typedef	T		value_type;
 		typedef	Node	node_type;
 		typedef	Node *	pointer_type;
 
-	private:
 		pointer_type			_top;
 		pointer_type			_last;
 		pointer_type			_pos;
+	private:
 
 	public:
 		map_iterator()
 		: _top(NULL), _last(NULL), _pos(NULL) {}
 
-		map_iterator(pointer_type t, pointer_type l, pointer_type c)
+		map_iterator(const pointer_type t, const pointer_type l, const pointer_type c)
 		: _top(t), _last(l), _pos(c) {}
 
 		map_iterator(const map_iterator & ri)
@@ -46,14 +47,32 @@ namespace ft {
 
 		~map_iterator() {}
 
-		bool operator==(const map_iterator & rhs)
+		pointer_type getT() const
+		{ return _top; }
+		pointer_type getL() const
+		{ return _last; }
+		pointer_type getP() const
+		{ return _pos; }
+
+		operator const_iterator()
+		{
+			return const_iterator(_top, _last, _pos);
+		}
+
+		bool operator==(const map_iterator & rhs) const
 		{
 			return _pos == rhs._pos;
 		}
 
-		bool operator!=(const map_iterator & rhs)
+		bool operator!=(const map_iterator & rhs) const
 		{
-			return !(*this == rhs);
+			return !(_pos == rhs._pos);
+			// return !(*this == rhs);
+		}
+		bool operator!=(const_iterator & rhs) const
+		{
+			return !(_pos == rhs._pos);
+			// return !(*this == rhs);
 		}
 
 		reference		operator*() const
@@ -68,7 +87,7 @@ namespace ft {
 				_pos = _last->parent;
 			}
 
-			else if (_pos->left) // protect
+			else if (_pos && _pos->left) // protect
 			{
 				_pos = _pos->left;
 				// deepest on right
@@ -76,7 +95,7 @@ namespace ft {
 					_pos = _pos->right;
 			}
 
-			else
+			else if (_pos)
 			{
 				pointer_type tmp = _pos->parent;
 
@@ -93,14 +112,14 @@ namespace ft {
 		}
 		map_iterator	operator++()
 		{
-			if (_pos->right) // protect
+			if (_pos && _pos->right) // protect
 			{
 				_pos = _pos->right;
 				// deepest on left
 				while (_pos->left != NULL)
 					_pos = _pos->left;
 			}
-			else
+			else if (_pos)
 			{
 				pointer_type tmp = _pos->parent;
 
@@ -137,7 +156,45 @@ namespace ft {
 			return &(operator*());
 		}
 
+		// template<class NN, class TT>
+		
+		// {
+		// 	lhs._top = rhs._top;
+		// 	lhs._last = rhs._last;
+		// 	lhs._pos = rhs._pos;
+		// 	return lhs;
+		// }
+
 	};
+
+	template<class NN, class TT>
+	bool operator!=(
+			map_iterator<NN, TT> & lhs,
+			const map_iterator<NN, TT> & rhs)
+	{
+		return lhs.getP() != rhs.getP();
+	}
+	template<class NN, class TT>
+	bool operator!=(
+			const map_iterator<NN, TT> & lhs,
+			map_iterator<NN, TT> & rhs)
+	{
+		return lhs.getP() != rhs.getP();
+	}
+	template<class NN, class TT>
+	bool operator!=(
+			map_iterator<NN, TT> & lhs,
+			map_iterator<NN, TT> & rhs)
+	{
+		return lhs.getP() != rhs.getP();
+	}
+	template<class NN, class TT>
+	bool operator!=(
+			const map_iterator<NN, TT> & lhs,
+			const map_iterator<NN, TT> & rhs)
+	{
+		return lhs.getP() != rhs.getP();
+	}
 
 };
 

@@ -233,10 +233,35 @@ void	ft_main()
 }
 
 
+void test13()
+{
+	ft::map<int, std::string> m1;
+	// ft::pair<int, std::string> pn1(-1, "N one");
+	// ft::pair<int, std::string> p0(0, "zero");
+	// ft::pair<int, std::string> p1(1, "one");
+	// ft::pair<int, std::string> p2(2, "two");
+
+	// m1.insert(p0);
+	// m1.insert(p1);
+	// m1.insert(p2);
+
+	// std::cout << m1.count(1);
+
+	m1[-1] = "N one";
+	m1[1] = "one";
+	m1[2] = "two";
+	m1[3] = "three";
+	m1[4] = "four";
+	m1.print();
+}
+
 int		main()
 {
-	ft_main();
-	std::map<int,int> m;
+	// ft_main();
+	// std::map<int,int> m;
 	// system("leaks a.out");
+	
+	test13();
+	
 	return 0;
 }

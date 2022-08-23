@@ -35,12 +35,67 @@ namespace ft {
 			typename Alloc::template rebind< Avl_Node<value_type> >::other	_alloc_node;
 
 		public:
-			avl_tree () : _top(NULL)
+			avl_tree () : _top(NULL), _comp_func(key_compare())
 			{
+				// std::cout << "DEFAULT CONSTRUCTOR" << std::endl;
 				_last = _alloc_node.allocate(1);
+			}
+			avl_tree (const avl_tree &a)
+			{
+				this->_top = NULL;
+				this->_last = NULL;
+				_comp_func = a._comp_func;
+				// std::cout << "DEFAULT 111  CONSTRUCTOR" << std::endl;
+				_last = _alloc_node.allocate(1);
+				copy(a._top);
+			}
+			void copy(node_type * t)
+			{
+				if (t)
+				{
+					// std::cerr << "ana khadama " << std::endl;
+					insert(*(t->current));
+					copy(t->right);
+					copy(t->left);
+				}
+			}
+			avl_tree & operator= (const avl_tree & t)
+			{
+				// std::cout << "ASSIGNMENT CONSTRUCTOR" << std::endl;
+				// delete
+				if (_top)
+				{
+					delete_tree(_top);
+				}
+				// delete
+				if (_last)
+				{
+					_alloc_node.deallocate(_last, 1);
+					_last = NULL;
+				}
+
+				// copy
+				if (t._last)
+				{
+					_last = _alloc_node.allocate(1);
+					_alloc_node.construct(_last, node_type(*t._last));
+				}
+				// copy
+				if (t._top)
+				{
+					_top = _alloc_node.allocate(1);
+					_alloc_node.construct(_top, node_type(*t._top));
+					// copy_tree(_top->right, t._top->right);
+					// copy_tree(_top->left, t._top->left);
+				}
+
+				copy_tree(_top, t._top);
+
+				return *this;
 			}
 			~avl_tree ()
 			{
+				// std::cout << "DESTRUCTOR" << std::endl;
 				// if (_top)
 				// 	delete_tree(_top);
 				if (_last)
@@ -75,19 +130,28 @@ namespace ft {
 				return ret;
 			}
 
-			node_type * deepest_left(node_type * n)
+			node_type * deepest_left(node_type * n) const
 			{
 				if (n)
+				{
 					while (n->left != NULL)
 						n = n->left;
+				}
+				return n;
+			}
+			node_type * deepest_right(node_type * n)
+			{
+				if (n)
+					while (n->right != NULL)
+						n = n->right;
 				return n;
 			}
 
-			node_type * find(const key_type& k)
+			node_type * find(const key_type& k) const
 			{
 				return find_wrap(_top, k);
 			}
-			node_type * find_wrap(node_type * pos, const key_type& k)
+			node_type * find_wrap(node_type * pos, const key_type& k) const
 			{
 				node_type * ret = _last;
 				if (!pos)
@@ -102,6 +166,17 @@ namespace ft {
 			}
 
 		private:
+			void copy_tree(node_type *& t, node_type * c)
+			{
+				if (c)
+				{
+					t = _alloc_node.allocate(1);
+					_alloc_node.construct(t, node_type(*c));
+					copy_tree(t->right, c->right);
+					copy_tree(t->left, c->left);
+				}
+			}
+
 			void delete_tree(node_type * pos)
 			{
 				if (pos->left)
@@ -232,11 +307,11 @@ namespace ft {
 					else
 					{
 						// replace value
-						pos->current->second = val.second;
+						// pos->current->second = val.second;
 						return false;
 					}
 					if (ret == false)
-						return false;
+						return false;    
 
 					pos->height = 1 + std::max(get_height(pos->left), get_height(pos->right));
 
@@ -265,103 +340,6 @@ namespace ft {
 				}
 
 				return ret;
-			}
-			bool insert_wrap_2 (node_type *& pos, const value_type& val)
-			{
-				// bool cond;
-				int orient = 0;
-				node_type * p = NULL;
-				node_type * tmp_node = pos;
-
-				// SEARCH
-				while (tmp_node)
-				{
-					if ( _comp_func(tmp_node->current->first, val.first) )
-					{
-						orient = 1;
-						p = tmp_node;
-						tmp_node = tmp_node->right;
-					}
-					else if ( _comp_func(val.first, tmp_node->current->first) )
-					{
-						orient = 2;
-						p = tmp_node;
-						tmp_node = tmp_node->left;
-					}
-					else
-					{
-						tmp_node->current->second = val.second;
-						return false;
-					}
-				}
-
-				// INSERT
-				if (tmp_node == NULL)
-				{
-					tmp_node = _alloc_node.allocate(1);
-					_alloc_node.construct(tmp_node, val);
-					tmp_node->parent = p;
-					if (orient == 1)
-						p->right = tmp_node;
-					if (orient == 2)
-						p->left = tmp_node;
-
-					// editing top reference
-					if (pos == NULL)
-						pos = tmp_node;
-				}
-
-				// BALANCE
-				while (tmp_node)
-				{
-					p = tmp_node;
-					balance_tree(tmp_node);
-					tmp_node = tmp_node->parent;
-				}
-
-				// update top reference
-				pos = p;
-
-				return true;
-			}
-			void balance_tree(node_type *& pos)
-			{
-				// if (pos->current->first == 4)
-				// 	std::cout << "height " << pos->height << std::endl;
-
-				pos->height = 1 + std::max(get_height(pos->left), get_height(pos->right));
-				// if (pos->current->first == 4)
-				// 	std::cout << "height " << pos->height << std::endl;
-				// 	std::cout << std::endl;
-
-				int this_balance = get_balance_factor(pos);
-
-				// std::cout << this_balance << " " <<
-				// get_balance_factor(pos->left) << " " <<
-				// get_balance_factor(pos->right) << std::endl;
-
-				// LEFT LEFT : RIGHT ROTATION
-				if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-					right_rotation(pos);
-
-				// RIGHT RIGHT : LEFT ROTATION
-				else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-					left_rotation(pos);
-
-				// LEFT RIGHT
-				else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-					left_right_rotation(pos);
-
-				else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-					right_left_rotation(pos);
-			}
-
-			node_type * deepest_right(node_type * n)
-			{
-				if (n)
-					while (n->right != NULL)
-						n = n->right;
-				return n;
 			}
 
 			node_type * right_rotation(node_type * y)
