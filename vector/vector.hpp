@@ -2,6 +2,8 @@
 # define	VECTOR_HPP
 
 // # include <iostream>
+// ptrdiff_t
+# include <cstddef>
 // allocator
 # include <memory>
 // vector iterator
@@ -74,7 +76,6 @@ namespace ft {
 				if (OUT)
 					std::cout << "VECTOR FILL CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
-
 				_vec = _alloc_type.allocate(n);
 				for (size_type i = 0; i < _capacity; i++)
 				{
@@ -171,12 +172,12 @@ namespace ft {
 				if (OUT)
 					std::cout << "VECTOR COPY ASSIGNMENNT CALLED" << std::endl;
 
-				// deallocate
-				_alloc_type.deallocate(_vec, _capacity);
-
 				// destroy
 				for (size_type i=0; i<_total; i++)
 					_alloc_type.destroy(_vec + i);
+
+				// deallocate
+				_alloc_type.deallocate(_vec, _capacity);
 
 				// allocate
 				_vec = _alloc_type.allocate(x._capacity);
@@ -276,6 +277,10 @@ namespace ft {
 					size_type newcap;
 
 					newcap = (_capacity * 2) > n ? _capacity * 2 : n;
+
+					if (newcap > max_size())
+						throw std::length_error("ft::vector::resize");
+
 					tmp = _alloc_type.allocate(newcap);
 
 					for (size_type i=0; i<_total; i++)
@@ -302,6 +307,8 @@ namespace ft {
 
 			void reserve (size_type n)
 			{
+				if (n > max_size())
+					throw std::length_error("ft::vector::reserve");
 				if (n > _capacity)
 				{
 					pointer tmp;
@@ -341,13 +348,13 @@ namespace ft {
 
 			      reference at (size_type n)
 			{
-				if (n < 0  || n >= _total)
+				if (n >= _total)
 					throw std::out_of_range("vector");
 				return _vec[n];
 			}
 			const_reference at (size_type n) const
 			{
-				if (n >= _capacity || n < 0)
+				if (n >= _capacity)
 					throw std::out_of_range("vector");
 				return _vec[n];
 			}
@@ -503,6 +510,9 @@ namespace ft {
 					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
 					pos_at = position - this->begin();
 
+					if (newcapacity > max_size())
+						throw std::length_error("ft::vector::insert (2)");
+
 					tmp = _alloc_type.allocate(newcapacity);
 
 					for (size_type i=0; i<pos_at; i++)
@@ -548,6 +558,9 @@ namespace ft {
 
 					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
 					pos_at = position - this->begin();
+
+					if (newcapacity > max_size())
+						throw std::length_error("ft::vector::insert (3)");
 
 					tmp = _alloc_type.allocate(newcapacity);
 

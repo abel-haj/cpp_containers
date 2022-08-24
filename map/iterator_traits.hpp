@@ -1,6 +1,8 @@
 #ifndef		MAP_ITERATOR_TRAITS_HPP
 # define	MAP_ITERATOR_TRAITS_HPP
 
+# include <cstddef>
+
 namespace ft {
 
 	template <class Iterator>

@@ -6,14 +6,16 @@
 # include "../other/iterator_traits.hpp"
 # include <functional> // less
 # include <memory> // allocator
+# include <iostream> // cout
+# include <algorithm> // max
 # include "map_node.hpp"
 
 namespace ft {
 
 	template < class Key,										// map::key_type
 				class T,										// map::mapped_type
-				class Compare = std::less<Key>					// map::key_compare>
-				// , class Alloc = std::allocator::template rebind<Avl_Node<ft::pair<const key_type, mapped_type>> >
+				class Compare,									// map::key_compare>
+				class Alloc
 				>
 	class avl_tree {
 
@@ -25,17 +27,154 @@ namespace ft {
 			typedef				Compare										key_compare;
 			typedef				size_t										size_type;
 
+			node_type *								_top;
+			node_type *								_last;
+
 		private:
 			key_compare								_comp_func;
-			node_type *								_top;
-			std::allocator< Avl_Node<value_type> >	_alloc_node;
+			typename Alloc::template rebind< Avl_Node<value_type> >::other	_alloc_node;
 
 		public:
-			avl_tree () : _top(NULL) {}
+			avl_tree () : _top(NULL), _comp_func(key_compare())
+			{
+				// std::cout << "DEFAULT CONSTRUCTOR" << std::endl;
+				_last = _alloc_node.allocate(1);
+			}
+			avl_tree (const avl_tree &a)
+			{
+				this->_top = NULL;
+				this->_last = NULL;
+				_comp_func = a._comp_func;
+				// std::cout << "DEFAULT 111  CONSTRUCTOR" << std::endl;
+				_last = _alloc_node.allocate(1);
+				copy(a._top);
+			}
+			void copy(node_type * t)
+			{
+				if (t)
+				{
+					// std::cerr << "ana khadama " << std::endl;
+					insert(*(t->current));
+					copy(t->right);
+					copy(t->left);
+				}
+			}
+			avl_tree & operator= (const avl_tree & t)
+			{
+				// std::cout << "ASSIGNMENT CONSTRUCTOR" << std::endl;
+				// delete
+				if (_top)
+				{
+					delete_tree(_top);
+				}
+				// delete
+				if (_last)
+				{
+					_alloc_node.deallocate(_last, 1);
+					_last = NULL;
+				}
+
+				// copy
+				if (t._last)
+				{
+					_last = _alloc_node.allocate(1);
+					_alloc_node.construct(_last, node_type(*t._last));
+				}
+				// copy
+				if (t._top)
+				{
+					_top = _alloc_node.allocate(1);
+					_alloc_node.construct(_top, node_type(*t._top));
+					// copy_tree(_top->right, t._top->right);
+					// copy_tree(_top->left, t._top->left);
+				}
+
+				copy_tree(_top, t._top);
+
+				return *this;
+			}
 			~avl_tree ()
 			{
-				if (_top)
-					delete_tree(_top);
+				// std::cout << "DESTRUCTOR" << std::endl;
+				// if (_top)
+				// 	delete_tree(_top);
+				if (_last)
+				{
+					_alloc_node.deallocate(_last, 1);
+					_last = NULL;
+				}
+			}
+
+			void print()
+			{
+				std::cout << std::endl;
+				std::cout << "------------" << std::endl;
+
+				printBT("", _top, false);
+				check_balance(_top);
+			}
+			size_type erase (const key_type& k)
+			{
+				size_type ret = erase_wrap(_top, k);
+				_last->parent = deepest_right(_top);
+
+				return ret;
+			}
+			bool insert (const value_type& val)
+			{
+				bool ret;
+
+				ret = insert_wrap(_top, val, NULL);
+				_last->parent = deepest_right(_top);
+
+				return ret;
+			}
+
+			node_type * deepest_left(node_type * n) const
+			{
+				if (n)
+				{
+					while (n->left != NULL)
+						n = n->left;
+				}
+				return n;
+			}
+			node_type * deepest_right(node_type * n)
+			{
+				if (n)
+					while (n->right != NULL)
+						n = n->right;
+				return n;
+			}
+
+			node_type * find(const key_type& k) const
+			{
+				return find_wrap(_top, k);
+			}
+			node_type * find_wrap(node_type * pos, const key_type& k) const
+			{
+				node_type * ret = _last;
+				if (!pos)
+					return ret;
+				else if (pos && _comp_func(pos->current->first, k) )
+					ret = find_wrap(pos->right, k);
+				else if (pos &&  _comp_func(k, pos->current->first) )
+					ret = find_wrap(pos->left, k);
+				else if(k == pos->current->first)
+					return pos;
+				return ret;
+			}
+
+		private:
+			void copy_tree(node_type *& t, node_type * c)
+			{
+				if (c)
+				{
+					t = _alloc_node.allocate(1);
+					_alloc_node.construct(t, node_type(*c));
+					copy_tree(t->right, c->right);
+					copy_tree(t->left, c->left);
+				}
 			}
 
 			void delete_tree(node_type * pos)
@@ -46,12 +185,9 @@ namespace ft {
 					delete_tree(pos->right);
 
 				_alloc_node.deallocate(pos, 1);
+				pos = NULL;
 			}
 
-			size_type erase (const key_type& k)
-			{
-				return erase_wrap(_top, k);
-			}
 			size_type erase_wrap (node_type *& pos, const key_type& k)
 			{
 				size_type ret = 0;
@@ -127,27 +263,28 @@ namespace ft {
 
 					// LEFT LEFT : RIGHT ROTATION
 					if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-						right_rotation(pos);
+						pos = right_rotation(pos);
 
 					// RIGHT RIGHT : LEFT ROTATION
 					else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-						left_rotation(pos);
+						pos = left_rotation(pos);
 
 					// LEFT RIGHT
 					else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-						left_right_rotation(pos);
+					{
+						pos->left = left_rotation(pos->left);
+						pos = right_rotation(pos);
+					}
 
 					else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-						right_left_rotation(pos);
+					{
+						pos->right = right_rotation(pos->right);
+						pos = left_rotation(pos);
+					}
 				}
 				return ret;
 			}
 
-			bool insert (const value_type& val)
-			{
-				return insert_wrap(_top, val, NULL);
-				return insert_wrap_2(_top, val);
-			}
 			bool insert_wrap (node_type *& pos, const value_type& val, node_type * p)
 			{
 				node_type	new_node(val);
@@ -156,8 +293,8 @@ namespace ft {
 				if ( pos == NULL )
 				{
 					pos = _alloc_node.allocate(1);
-					pos->parent = p;
 					_alloc_node.construct(pos, val);
+					pos->parent = p;
 					return true;
 				}
 
@@ -170,11 +307,11 @@ namespace ft {
 					else
 					{
 						// replace value
-						pos->current->second = val.second;
+						// pos->current->second = val.second;
 						return false;
 					}
 					if (ret == false)
-						return false;
+						return false;    
 
 					pos->height = 1 + std::max(get_height(pos->left), get_height(pos->right));
 
@@ -182,207 +319,90 @@ namespace ft {
 
 					// LEFT LEFT : RIGHT ROTATION
 					if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-						right_rotation(pos);
+						pos = right_rotation(pos);
 
 					// RIGHT RIGHT : LEFT ROTATION
 					else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-						left_rotation(pos);
+						pos = left_rotation(pos);
 
 					// LEFT RIGHT
 					else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-						left_right_rotation(pos);
+					{
+						pos->left = left_rotation(pos->left);
+						pos = right_rotation(pos);
+					}
 
 					else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-						right_left_rotation(pos);
+					{
+						pos->right = right_rotation(pos->right);
+						pos = left_rotation(pos);
+					}
 				}
 
 				return ret;
 			}
-			bool insert_wrap_2 (node_type *& pos, const value_type& val)
-			{
-				// bool cond;
-				int orient = 0;
-				node_type * p = NULL;
-				node_type * tmp_node = pos;
 
-				// SEARCH
-				while (tmp_node)
+			node_type * right_rotation(node_type * y)
+			{
+				node_type * x = y->left;
+				node_type * T2 = x->right;
+
+				x->right = y;
+				y->left = T2;
+				parent_correction(x, y->parent);
+
+				if (x->right)
+					x->right->height = cal_height(x->right);
+				if (x->left)
+					x->left->height = cal_height(x->left);
+				x->height =  cal_height(x);
+
+				return x;
+			}
+
+			node_type * left_rotation(node_type * x)
+			{
+				node_type * y = x->right;
+				node_type * T2 = y->left;
+
+				y->left = x;
+				x->right = T2;
+				parent_correction(y, x->parent);
+
+				if (y->left)
+					y->left->height = cal_height(y->left);
+				if (y->right)
+					y->right->height = cal_height(y->right);
+				y->height = cal_height(y);
+
+				return y;
+			}
+
+			int cal_height(node_type *r)
+			{
+				if (r->right && r->left)
 				{
-					if ( _comp_func(tmp_node->current->first, val.first) )
-					{
-						orient = 1;
-						p = tmp_node;
-						tmp_node = tmp_node->right;
-					}
-					else if ( _comp_func(val.first, tmp_node->current->first) )
-					{
-						orient = 2;
-						p = tmp_node;
-						tmp_node = tmp_node->left;
-					}
+					if (r->left->height < r->right->height)
+						return r->right->height  + 1;
 					else
-					{
-						tmp_node->current->second = val.second;
-						return false;
-					}
+						return r->left->height + 1;
 				}
-
-				// INSERT
-				if (tmp_node == NULL)
+				else if(r->right && r->left == NULL)
 				{
-					tmp_node = _alloc_node.allocate(1);
-					_alloc_node.construct(tmp_node, val);
-					tmp_node->parent = p;
-					if (orient == 1)
-						p->right = tmp_node;
-					if (orient == 2)
-						p->left = tmp_node;
-
-					// editing top reference
-					if (pos == NULL)
-						pos = tmp_node;
+						return r->right->height + 1;
 				}
-
-				// BALANCE
-				while (tmp_node)
-				{
-					p = tmp_node;
-					balance_tree(tmp_node);
-					tmp_node = tmp_node->parent;
-				}
-
-				// update top reference
-				pos = p;
-
-				return true;
-			}
-			void balance_tree(node_type *& pos)
-			{
-				// if (pos->current->first == 4)
-				// 	std::cout << "height " << pos->height << std::endl;
-
-				pos->height = 1 + std::max(get_height(pos->left), get_height(pos->right));
-				// if (pos->current->first == 4)
-				// 	std::cout << "height " << pos->height << std::endl;
-				// 	std::cout << std::endl;
-
-				int this_balance = get_balance_factor(pos);
-
-				// std::cout << this_balance << " " <<
-				// get_balance_factor(pos->left) << " " <<
-				// get_balance_factor(pos->right) << std::endl;
-
-				// LEFT LEFT : RIGHT ROTATION
-				if (this_balance > 1 && get_balance_factor(pos->left) > 0)
-					right_rotation(pos);
-
-				// RIGHT RIGHT : LEFT ROTATION
-				else if (this_balance < -1 && get_balance_factor(pos->right) < 0)
-					left_rotation(pos);
-
-				// LEFT RIGHT
-				else if (this_balance > 1 && get_balance_factor(pos->left) < 0)
-					left_right_rotation(pos);
-
-				else if (this_balance < -1 && get_balance_factor(pos->right) > 0)
-					right_left_rotation(pos);
+				else if (r->right == NULL && r->left)
+					return r->left->height + 1;
+				return 1;
 			}
 
-			node_type * deepest_left(node_type * n)
+			void parent_correction(node_type *&n, node_type *p)
 			{
-				if (n)
-					while (n->left != NULL)
-						n = n->left;
-				return n;
-			}
-			node_type * deepest_right(node_type * n)
-			{
-				if (n)
-					while (n->right != NULL)
-						n = n->right;
-				return n;
-			}
-
-			void left_right_rotation(node_type * & n)
-			{
-				// A
-				node_type * tmp_left = n->left;
-				// B
-				node_type * tmp_right = n->left->right;
-				// C
-				n->left = tmp_right;
-
-				node_type * tmp_right_l = tmp_right->left;
-				tmp_right->left = tmp_left;
-				tmp_right->parent = n;
-
-				tmp_left->right = tmp_right_l;
-				tmp_left->parent = tmp_right;
-
-				right_rotation(n);
-			}
-
-			void right_left_rotation(node_type * & n)
-			{
-				// A
-				node_type * tmp_right = n->right;
-				// B
-				node_type * tmp_left = n->right->left;
-				// C
-				n->right = tmp_left;
-
-				node_type * tmp_left_r = tmp_left->right;
-				tmp_left->right = tmp_right;
-				tmp_left->parent = n;
-
-				tmp_right->left = tmp_left_r;
-				tmp_right->parent = tmp_left;
-
-				left_rotation(n);
-			}
-
-			void right_rotation(node_type * & n)
-			{
-				node_type * tmp_l = n->left;
-				node_type * tmp_l_r = tmp_l->right;
-				node_type * tmp_p = n->parent;
-
-				tmp_l->right = n;
-				n->left = tmp_l_r;
-				n->parent = tmp_l;
-				n = tmp_l;
-
-				n->parent = tmp_p;
-				if (tmp_p)
-					tmp_p->right = n;
-				if (tmp_p)
-					std::cout << tmp_p->current->second << std::endl;
-
-				n->right->height = 1 + std::max(get_height(n->right->left), get_height(n->right->right));
-				n->left->height = 1 + std::max(get_height(n->left->left), get_height(n->left->right));
-				n->height = 1 + std::max(get_height(n->left), get_height(n->right));
-			}
-
-			void left_rotation(node_type * & n)
-			{
-				node_type * tmp_r = n->right;
-				node_type * tmp_r_l = tmp_r->left;
-				node_type * tmp_p = n->parent;
-
-				tmp_r->left = n;
-				n->right = tmp_r_l;
-				n->parent = tmp_r;
-				n = tmp_r;
-
-				n->parent = tmp_p;
-				if (tmp_p)
-					tmp_p->left = n;
-				if (tmp_p)
-					std::cout << tmp_p->current->second << std::endl;
-
-				n->right->height = 1 + std::max(get_height(n->right->left), get_height(n->right->right));
-				n->left->height = 1 + std::max(get_height(n->left->left), get_height(n->left->right));
-				n->height = 1 + std::max(get_height(n->left), get_height(n->right));
+				if (n == NULL)
+					return ;
+				parent_correction(n->right, n);
+				n->parent = p;
+				parent_correction(n->left, n);
 			}
 
 			size_type get_height(node_type * n)
@@ -399,14 +419,6 @@ namespace ft {
 				return 0;
 			}
 
-			void print()
-			{
-				std::cout << std::endl;
-				std::cout << "------------" << std::endl;
-
-				printBT("", _top, false);
-				check_balance(_top);
-			}
 			void printBT(const std::string& prefix, const node_type* node, bool isLeft)
 			{
 				if( node != NULL )
@@ -419,7 +431,11 @@ namespace ft {
 					std::cout << node->height << " : "
 					<< "[" << node->current->first
 					<< ":" << node->current->second
-					<< "]" << std::endl;
+					<< "]"
+					// << " p " << node->parent
+					// << " l " << node->left
+					// << " r " << node->right
+					<< std::endl;
 
 					// enter the next tree level - left and right branch
 					printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);

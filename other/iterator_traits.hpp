@@ -1,7 +1,11 @@
 #ifndef		ITERATOR_TRAITS_HPP
 # define	ITERATOR_TRAITS_HPP
 
+# include <cstddef>
+
 namespace ft {
+
+	struct random_access_iterator_tag {};
 
 	template <class Iterator>
 	class iterator_traits {
@@ -23,7 +27,7 @@ namespace ft {
 		typedef T											value_type;
 		typedef T*											pointer;
 		typedef T&											reference;
-		typedef std::random_access_iterator_tag				iterator_category;
+		typedef ft::random_access_iterator_tag				iterator_category;
 
 	};
 
@@ -35,10 +39,10 @@ namespace ft {
 		typedef T											value_type;
 		typedef const T*									pointer;
 		typedef const T&									reference;
-		typedef std::random_access_iterator_tag				iterator_category;
+		typedef ft::random_access_iterator_tag				iterator_category;
 
 	};
 
-}
+};
 
 #endif

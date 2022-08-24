@@ -4,6 +4,8 @@
 #include <iostream>
 #include <exception>
 
+#define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
+
 int		main(void)
 {
 	// std::vector<int>::difference_type;
@@ -12,10 +14,10 @@ int		main(void)
 	// // // std::vector<int>::reverse_iterator it3;
 	// // // std::vector<int>::const_reverse_iterator it4;
 
-	int	arr[3] = {3, 2, 1};
+	// int	arr[3] = {3, 2, 1};
 
-	std::vector<int> 	their(arr, arr + 3);
-	ft::vector<int>		mine(arr, arr + 3);
+	// std::vector<int> 	their(arr, arr + 3);
+	// ft::vector<int>		mine(arr, arr + 3);
 	// ft::vector<int>		mine(3, 2);
 
 	// int	a,b;
@@ -50,10 +52,10 @@ int		main(void)
 
 	// std::vector<int> their(10, 1337);
 	// ft::vector<int> mine(10, 1337);
-	std::vector<int>::iterator itstd = their.begin();
-	ft::vector<int>::iterator itft = mine.begin();
-	their.clear();
-	their.pop_back();
+	// std::vector<int>::iterator itstd = their.begin();
+	// ft::vector<int>::iterator itft = mine.begin();
+	// their.clear();
+	// their.pop_back();
 
 	// // ----
 	// std::vector<int> emptystd;
@@ -444,6 +446,27 @@ int		main(void)
 	// 	std::cout << ' ' << *rev_from4++;
 	// std::cout << '\n';
 	// // RELATIONAL OPERATORS NON MEMBER
+
+        /*------------------ std::vectors ---------------------*/
+        std::vector<std::string> v1(10, "string1");
+        std::vector<std::string> v2(10, "string2");
+        v1 = v2;
+        /*-----------------------------------------------------*/
+        /*------------------ ft::vectors ---------------------*/
+        ft::vector<std::string> ft_v1(10, "string1");
+        ft::vector<std::string> ft_v2(10, "string2");
+        ft_v1 = ft_v2;
+        /*----------------------------------------------------*/
+        /*------------------ strings to store the results ----*/
+        std::string res, ft_res;
+        /*----------------------------------------------------*/
+        for (std::vector<std::string>::iterator it = v1.begin(); it != v1.end(); ++it) // fill res from v1
+            res += *it;
+
+        for (ft::vector<std::string>::iterator it = ft_v1.begin(); it != ft_v1.end(); ++it) // fill ft_res from ft_v1
+            ft_res += *it;
+
+        EQUAL(res == ft_res);
 
 	return 0;
 }
