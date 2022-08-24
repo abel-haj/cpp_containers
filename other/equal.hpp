@@ -1,5 +1,3 @@
-
-
 #ifndef		FT_EQUAL
 # define	FT_EQUAL
 
