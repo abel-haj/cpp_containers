@@ -43,8 +43,8 @@ namespace ft {
 			typedef				size_t										size_type;
 			typedef	typename	Alloc::template rebind< base_map >::other	allocator_tree;
 
-			class value_compare // reda
-			{   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+			class value_compare
+			{
 				friend class map;
 				protected:
 					Compare comp;
@@ -79,6 +79,7 @@ namespace ft {
 						: _alloc_tree(allocator_tree()), _alloc_type(alloc), _comp_func(comp), _size(0)
 						{
 							_base_map = _alloc_tree.allocate(1);
+							// std::cout << "Alloc 7 " << _base_map << std::endl;
 							_alloc_tree.construct(_base_map, base_map());
 						}
 			// range (2)
@@ -89,6 +90,7 @@ namespace ft {
 				: _alloc_tree(allocator_tree()), _alloc_type(alloc), _base_map(NULL), _comp_func(comp), _size(0)
 				{
 					_base_map = _alloc_tree.allocate(1);
+					// std::cout << "Alloc 8 " << _base_map << std::endl;
 					_alloc_tree.construct(_base_map, base_map());
 					while (first != last)
 					{
@@ -101,6 +103,7 @@ namespace ft {
 			: _alloc_tree(allocator_tree()), _alloc_type(allocator_type()), _base_map(NULL), _comp_func(key_compare()), _size(0)
 			{
 				_base_map = _alloc_tree.allocate(1);
+				// std::cout << "Alloc 9 " << _base_map << std::endl;
 				_alloc_tree.construct(_base_map, base_map());
 
 				_comp_func = x._comp_func;
@@ -118,8 +121,10 @@ namespace ft {
 			~map()
 			{
 				clear();
+				// std::cout << "Freed 7 " << _base_map << std::endl;
+				_alloc_tree.destroy(_base_map);
 				_alloc_tree.deallocate(_base_map, 1);
-			} // reda
+			}
 			// [ DESTRUCTOR ]
 
 			// [ COPY CONSTRUCTOR ]
@@ -191,7 +196,7 @@ namespace ft {
 			// [ CAPACITY ]
 
 			// [ ELEMENT ACCESS ]
-			mapped_type& operator[] (const key_type& k) // reda
+			mapped_type& operator[] (const key_type& k)
 			{
 				node_type * found = _base_map->find(k);
 				if (iterator(_base_map->_top, _base_map->_last, found) != end())
@@ -237,6 +242,8 @@ namespace ft {
 			// (1)
 			void erase (iterator position)
 			{
+				if(empty() ==  true)
+					return ;
 				erase((*position).first);
 			}
 			// (2)
@@ -253,11 +260,6 @@ namespace ft {
 			{
 				if(empty() ==  true)
 					return ;
-				// while (first != last)
-				// {
-				// 	erase(first);
-				// 	first++;
-				// }
 				ft::vector<key_type> backup;
 				while (first != last)
 				{
@@ -287,13 +289,12 @@ namespace ft {
 			// [ MODIFIERS ]
 
 			// [ OBSERVERS ]
-			key_compare key_comp() const // reda
+			key_compare key_comp() const
 			{
-				// return key_compare();
 				return _comp_func;
 			}
 
-			value_compare value_comp() const // reda
+			value_compare value_comp() const
 			{
 				return (value_compare(_comp_func));
 			}
@@ -311,7 +312,7 @@ namespace ft {
 				return const_iterator(_base_map->_top, _base_map->_last, found);
 			}
 
-			size_type count (const key_type& k) const // reda
+			size_type count (const key_type& k) const
 			{
 				node_type * found = _base_map->find(k);
 				node_type * tmp_end = _base_map->_last;
@@ -319,8 +320,7 @@ namespace ft {
 					return (1);
 				return (0);
 			}
-			
-			// reda
+
 			iterator lower_bound (const key_type& k)
 			{
 				iterator it = find(k);
@@ -355,17 +355,13 @@ namespace ft {
 			}
 			iterator upper_bound (const key_type& k)
 			{
-				// std::cout << "UPPER BOUND 1" << std::endl;
 				iterator it = find(k);
 				if (it != end())
 					return (++it);
-				// iterator tmp(_base_map->_top, _base_map->_last, _base_map->deepest_left(_base_map->_top));
+
 				iterator tmp = begin();
 				while ( tmp != end() )
 				{
-					// std::cout << k << " - " << (*tmp).first << std::endl;
-					// std::cout << k << " - " << _base_map->deepest_right(_base_map->_top)->current->first << std::endl;
-					// std::cout << std::endl;
 					if (_comp_func(k, (*tmp).first) &&
 						_comp_func(k, _base_map->deepest_right(_base_map->_top)->current->first))
 						return (iterator(tmp));
@@ -375,17 +371,13 @@ namespace ft {
 			}
 			const_iterator upper_bound (const key_type& k) const
 			{
-				// std::cout << "UPPER BOUND 2" << std::endl;
 				const_iterator it = find(k);
 				if (it != end())
 					return (++it);
-				// const_iterator tmp(_base_map->_top, _base_map->_last, _base_map->deepest_left(_base_map->_top));
+
 				const_iterator tmp = begin();
 				while ( tmp != end() )
 				{
-					// std::cout << k << " - " << (*tmp).first << std::endl;
-					// std::cout << k << " - " << _base_map->deepest_right(_base_map->_top)->current->first << std::endl;
-					// std::cout << std::endl;
 					if (_comp_func(k, (*tmp).first) &&
 						_comp_func(k, _base_map->deepest_right(_base_map->_top)->current->first))
 						return (const_iterator(tmp));
@@ -410,7 +402,6 @@ namespace ft {
 
 	};
 
-	// reda
 	template <class Key, class T, class Compare, class Alloc>
 	void swap (map<Key,T,Compare,Alloc>& x, map<Key,T,Compare,Alloc>& y)
 	{

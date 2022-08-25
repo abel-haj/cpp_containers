@@ -36,7 +36,7 @@ namespace ft {
 			typedef	typename	allocator_type::pointer						pointer; // allocator_type::pointer
 			typedef	typename	allocator_type::const_pointer				const_pointer; // allocator_type::const_pointer
 			typedef				ft::vector_iterator<pointer>				iterator; // a random access iterator to value_type	convertible to const_iterator
-			typedef				ft::vector_iterator<pointer>				const_iterator; // a random access iterator to const value_type
+			typedef				ft::vector_iterator<const_pointer>				const_iterator; // a random access iterator to const value_type
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator; // reverse_iterator<iterator>
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator; // reverse_iterator<const_iterator>
 			typedef				ptrdiff_t									difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type
@@ -200,7 +200,7 @@ namespace ft {
 			// BEGIN
 			      iterator begin(void)
 			{
-				// const-qualified?
+
 				return iterator(_vec);
 			}
 
@@ -289,6 +289,9 @@ namespace ft {
 					for (size_type i=_total; i<newcap; i++)
 						_alloc_type.construct(tmp + i, val);
 
+					for (size_type i=0; i<_total; i++)
+						_alloc_type.destroy(_vec + i);
+
 					_alloc_type.deallocate(_vec, _capacity);
 					_total = _capacity = n;
 					_vec = tmp;
@@ -321,6 +324,9 @@ namespace ft {
 
 					for (size_type i=_total; i<n; i++)
 						_alloc_type.construct(_vec + i, value_type());
+
+					for (size_type i=0; i<_total; i++)
+						_alloc_type.destroy(_vec + i);
 
 					_alloc_type.deallocate(tmp, _capacity);
 					_capacity = n;
@@ -424,7 +430,6 @@ namespace ft {
 				}
 			}
 
-
 			void push_back (const value_type& val)
 			{
 				if (_total < _capacity)
@@ -466,69 +471,53 @@ namespace ft {
 
 			void pop_back(void)
 			{
+				_alloc_type.destroy(_vec + (_total - 1));
 				_total--;
 			}
 
 			// single element (1)
 			iterator insert (iterator position, const value_type& val)
 			{
-				size_type dist;
+				difference_type dist;
+				dist = std::distance(this->begin(), position);
 
 				if ( _capacity == _total )
 				{
 					if ( _capacity == 0 )
-						this->resize(1);
+						this->reserve(1); // length error
 					else
-						this->resize(_capacity * 2);
+						this->reserve(_capacity * 2); // length error
 				}
 
-				dist = this->end() - position;
+				for (difference_type i=_total; i>dist; i--)
+					_alloc_type.construct(_vec + i, _vec[i - 1]);
 
-				for (size_type i=0; i<dist; i++)
-					_vec[i] = _vec[_total - i - 1];
-
-				_alloc_type.construct(_vec - dist, val);
-				return this->begin() - dist;
+				_alloc_type.construct(_vec + dist, val);
+				++_total;
+				return iterator(_vec + dist);
 			}
 			// fill (2)
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				// there is room
-				if (_capacity >= _total + n)
+				difference_type dist = std::distance(begin(), position);
+
+				if (_total == 0)
+					reserve(n);
+				else if (_total + n > _capacity)
 				{
-					for (size_type i = 0; i < n; i++)
-						this->insert(position, val);
+					if (_capacity * 2 >= _total + n)
+						reserve(_capacity * 2);
+					else
+						reserve(_total + n);
 				}
 
-				// there aint
-				else
-				{
-					size_type newcapacity;
-					size_type pos_at;
-					pointer tmp;
+				for (difference_type i = _total - 1;i >= dist;--i)
+					_alloc_type.construct(_vec + (i + n), _vec[i]);
 
-					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
-					pos_at = position - this->begin();
+				for (size_t i = 0; i < n; ++i)
+					_alloc_type.construct(_vec + dist++, val);
 
-					if (newcapacity > max_size())
-						throw std::length_error("ft::vector::insert (2)");
-
-					tmp = _alloc_type.allocate(newcapacity);
-
-					for (size_type i=0; i<pos_at; i++)
-						_alloc_type.construct(tmp + i, _vec[i]);
-
-					for (size_type i=pos_at; i<pos_at + n; i++)
-						_alloc_type.construct(tmp + i, val);
-
-					for (size_type i=pos_at+n; i<_total+n; i++)
-						_alloc_type.construct(tmp + i, _vec[i - n]);
-
-					_alloc_type.deallocate(_vec, _capacity);
-					_vec = tmp;
-					_total += n;
-					_capacity = newcapacity;
-				}
+				_total += n;
 			}
 			// range (3)
 			template <class InputIterator>
@@ -537,7 +526,7 @@ namespace ft {
 			{
 				size_type n;
 
-				n = last - first;
+				n = std::distance(first, last);
 
 				// there is room
 				if (_capacity >= _total + n)
@@ -557,7 +546,7 @@ namespace ft {
 					pointer tmp;
 
 					newcapacity = ((_capacity * 2) > (n + _total)) ? _capacity * 2 : n + _total;
-					pos_at = position - this->begin();
+					pos_at = std::distance(this->begin(), position);
 
 					if (newcapacity > max_size())
 						throw std::length_error("ft::vector::insert (3)");
@@ -575,6 +564,9 @@ namespace ft {
 
 					for (size_type i=pos_at+n; i<_total+n; i++)
 						_alloc_type.construct(tmp + i, _vec[i - n]);
+
+					for (size_type i=0; i<_total; i++)
+						_alloc_type.destroy(_vec + i);
 
 					_alloc_type.deallocate(_vec, _capacity);
 					_vec = tmp;
@@ -655,7 +647,6 @@ namespace ft {
 	};
 
 	//			RELATIONAL OPERATORS				//
-	//												//
 	// (1)
 	template <class T, class Alloc>
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
@@ -695,17 +686,14 @@ namespace ft {
 	{
 		return (rhs <= lhs);
 	}
-	//												//
 	//			RELATIONAL OPERATORS				//
 
 	//						SWAP					//
-	//												//
 	template <class T, class Alloc>
 	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
 	{
 		x.swap(y);
 	}
-	//												//
 	//						SWAP					//
 
 };

@@ -37,31 +37,23 @@ namespace ft {
 		public:
 			avl_tree () : _top(NULL), _comp_func(key_compare())
 			{
-				// std::cout << "DEFAULT CONSTRUCTOR" << std::endl;
+				// std::cout << "AVL DEFAULT CONSTRUCTOR" << std::endl;
 				_last = _alloc_node.allocate(1);
+				// std::cout << "Alloc 1 " << _last << std::endl;
 			}
 			avl_tree (const avl_tree &a)
 			{
-				this->_top = NULL;
-				this->_last = NULL;
+				// std::cout << "AVL COPY CONSTRUCTOR" << std::endl;
+				_top = NULL;
+				_last = NULL;
 				_comp_func = a._comp_func;
-				// std::cout << "DEFAULT 111  CONSTRUCTOR" << std::endl;
 				_last = _alloc_node.allocate(1);
+				// std::cout << "Alloc 2 " << _last << std::endl;
 				copy(a._top);
-			}
-			void copy(node_type * t)
-			{
-				if (t)
-				{
-					// std::cerr << "ana khadama " << std::endl;
-					insert(*(t->current));
-					copy(t->right);
-					copy(t->left);
-				}
 			}
 			avl_tree & operator= (const avl_tree & t)
 			{
-				// std::cout << "ASSIGNMENT CONSTRUCTOR" << std::endl;
+				// std::cout << "AVL ASSIGNMENT OPERATOR" << std::endl;
 				// delete
 				if (_top)
 				{
@@ -70,7 +62,8 @@ namespace ft {
 				// delete
 				if (_last)
 				{
-					_alloc_node.deallocate(_last, 1);
+					// std::cout << "Freed 1 " << _last << std::endl;
+					_alloc_node.deallocate(_last, 1); // no destroy // was not constructed
 					_last = NULL;
 				}
 
@@ -78,30 +71,43 @@ namespace ft {
 				if (t._last)
 				{
 					_last = _alloc_node.allocate(1);
+					// std::cout << "Alloc 3 " << _last << std::endl;
 					_alloc_node.construct(_last, node_type(*t._last));
 				}
 				// copy
 				if (t._top)
 				{
 					_top = _alloc_node.allocate(1);
+					// std::cout << "Alloc 4 " << _top << std::endl;
 					_alloc_node.construct(_top, node_type(*t._top));
-					// copy_tree(_top->right, t._top->right);
-					// copy_tree(_top->left, t._top->left);
+					copy_tree(_top->right, t._top->right);
+					copy_tree(_top->left, t._top->left);
 				}
 
-				copy_tree(_top, t._top);
+				// copy_tree(_top, t._top);
 
 				return *this;
 			}
 			~avl_tree ()
 			{
-				// std::cout << "DESTRUCTOR" << std::endl;
 				// if (_top)
 				// 	delete_tree(_top);
 				if (_last)
 				{
-					_alloc_node.deallocate(_last, 1);
+					// std::cout << "Freed 2 " << _last << std::endl;
+					// _alloc_node.destroy(_last);
+					_alloc_node.deallocate(_last, 1); // no destroy // was not constructed
 					_last = NULL;
+				}
+			}
+
+			void copy(node_type * t)
+			{
+				if (t)
+				{
+					insert(*(t->current));
+					copy(t->right);
+					copy(t->left);
 				}
 			}
 
@@ -171,6 +177,7 @@ namespace ft {
 				if (c)
 				{
 					t = _alloc_node.allocate(1);
+					// std::cout << "Alloc 5 " << t << std::endl;
 					_alloc_node.construct(t, node_type(*c));
 					copy_tree(t->right, c->right);
 					copy_tree(t->left, c->left);
@@ -184,6 +191,8 @@ namespace ft {
 				if (pos->right)
 					delete_tree(pos->right);
 
+				// std::cout << "Freed 3 " << pos << std::endl;
+				_alloc_node.destroy(pos);
 				_alloc_node.deallocate(pos, 1);
 				pos = NULL;
 			}
@@ -203,13 +212,14 @@ namespace ft {
 						ret = erase_wrap(pos->right, k);
 
 					// Same
-					else
+					else if(k == pos->current->first)
 					{
+
 						if ( pos->left == NULL && pos->right == NULL )
 						{
-							// std::cout << "LR" << std::endl;
+							// std::cout << "Freed 4 " << pos << std::endl;
+							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
-							// _alloc_node.destroy(pos);
 							pos = NULL;
 
 							return 1;
@@ -217,12 +227,12 @@ namespace ft {
 
 						else if ( pos->left == NULL )
 						{
-							// std::cout << "L" << std::endl;
 							node_type * tmp = pos->right;
 							node_type * tmp_p = pos->parent;
 
+							// std::cout << "Freed 5 " << pos << std::endl;
+							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
-							// _alloc_node.destroy(pos);
 							pos = NULL;
 
 							pos = tmp;
@@ -232,24 +242,32 @@ namespace ft {
 
 						else if ( pos->right == NULL )
 						{
-							// std::cout << "R" << std::endl;
 							node_type * tmp = pos->left;
 							node_type * tmp_p = pos->parent;
 
+							// std::cout << "Freed 6 " << pos << std::endl;
+							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
-							// _alloc_node.destroy(pos);
 							pos = NULL;
 
 							pos = tmp;
 							tmp->parent = tmp_p;
 							ret = 1;
 						}
-
 						else
 						{
-							// std::cout << "T3" << std::endl;
 							node_type * tmp = deepest_left(pos->right);
-							pos->current = tmp->current;
+							node_type * tmp_l = pos->left;
+							node_type * tmp_r = pos->right;
+							node_type * tmp_p = pos->parent;
+
+							// _alloc_node.construct(pos, *tmp);
+							pos = tmp;
+							pos->parent = tmp_p;
+							pos->left = tmp_l;
+							if (tmp != tmp_r)
+							pos->right = tmp_r;
+
 							ret = erase_wrap(pos->right, tmp->current->first);
 						}
 					}
@@ -293,6 +311,7 @@ namespace ft {
 				if ( pos == NULL )
 				{
 					pos = _alloc_node.allocate(1);
+					// std::cout << "Alloc 6 " << pos << std::endl;
 					_alloc_node.construct(pos, val);
 					pos->parent = p;
 					return true;
@@ -306,8 +325,6 @@ namespace ft {
 						ret = insert_wrap(pos->left, val, pos);
 					else
 					{
-						// replace value
-						// pos->current->second = val.second;
 						return false;
 					}
 					if (ret == false)
@@ -344,6 +361,7 @@ namespace ft {
 
 			node_type * right_rotation(node_type * y)
 			{
+				// std::cout << "RIGHT ROTATION" << std::endl;
 				node_type * x = y->left;
 				node_type * T2 = x->right;
 
@@ -362,6 +380,7 @@ namespace ft {
 
 			node_type * left_rotation(node_type * x)
 			{
+				// std::cout << "LEFT ROTATION" << std::endl;
 				node_type * y = x->right;
 				node_type * T2 = y->left;
 

@@ -31,6 +31,7 @@ namespace ft {
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
+				my_iterator = NULL;
 			}
 
 			vector_iterator(pointer vec)
@@ -39,11 +40,18 @@ namespace ft {
 			}
 
 			// copy constr
+			template <class Iter>
+			vector_iterator(const vector_iterator<Iter> & ri)
+			{
+				if (OUT)
+					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
+				my_iterator = ri.base();
+			}
 			vector_iterator(const vector_iterator & ri)
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
-				my_iterator = ri.my_iterator;
+				my_iterator = ri.base();
 			}
 
 			// copy assign
@@ -51,7 +59,7 @@ namespace ft {
 			{
 				if (OUT)
 					std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
-				my_iterator = rhs.my_iterator;
+				my_iterator = rhs.base();
 
 				return *this;
 			}
