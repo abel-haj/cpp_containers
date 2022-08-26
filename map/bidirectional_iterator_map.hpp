@@ -16,7 +16,6 @@ namespace ft {
 		typedef typename ft::map_iterator_traits<T*>::reference			reference;
 		typedef map_iterator<Node, const T>								const_iterator;
 
-		// typedef	T		value_type;
 		typedef	Node	node_type;
 		typedef	Node *	pointer_type;
 
@@ -47,13 +46,6 @@ namespace ft {
 
 		~map_iterator() {}
 
-		pointer_type getT() const
-		{ return _top; }
-		pointer_type getL() const
-		{ return _last; }
-		pointer_type getP() const
-		{ return _pos; }
-
 		operator const_iterator()
 		{
 			return const_iterator(_top, _last, _pos);
@@ -67,12 +59,10 @@ namespace ft {
 		bool operator!=(const map_iterator & rhs) const
 		{
 			return !(_pos == rhs._pos);
-			// return !(*this == rhs);
 		}
 		bool operator!=(const_iterator & rhs) const
 		{
 			return !(_pos == rhs._pos);
-			// return !(*this == rhs);
 		}
 
 		reference		operator*() const
@@ -156,15 +146,6 @@ namespace ft {
 			return &(operator*());
 		}
 
-		// template<class NN, class TT>
-		
-		// {
-		// 	lhs._top = rhs._top;
-		// 	lhs._last = rhs._last;
-		// 	lhs._pos = rhs._pos;
-		// 	return lhs;
-		// }
-
 	};
 
 	template<class NN, class TT>
@@ -172,28 +153,28 @@ namespace ft {
 			map_iterator<NN, TT> & lhs,
 			const map_iterator<NN, TT> & rhs)
 	{
-		return lhs.getP() != rhs.getP();
+		return lhs._pos != rhs._pos;
 	}
 	template<class NN, class TT>
 	bool operator!=(
 			const map_iterator<NN, TT> & lhs,
 			map_iterator<NN, TT> & rhs)
 	{
-		return lhs.getP() != rhs.getP();
+		return lhs._pos != rhs._pos;
 	}
 	template<class NN, class TT>
 	bool operator!=(
 			map_iterator<NN, TT> & lhs,
 			map_iterator<NN, TT> & rhs)
 	{
-		return lhs.getP() != rhs.getP();
+		return lhs._pos != rhs._pos;
 	}
 	template<class NN, class TT>
 	bool operator!=(
 			const map_iterator<NN, TT> & lhs,
 			const map_iterator<NN, TT> & rhs)
 	{
-		return lhs.getP() != rhs.getP();
+		return lhs._pos != rhs._pos;
 	}
 
 };

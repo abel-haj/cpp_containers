@@ -7,8 +7,6 @@
 # include <memory>
 // vector iterator
 # include <vector>
-// print debug
-# include <iostream>
 // out of range
 # include <exception>
 # include "random_iterator_vector.hpp"

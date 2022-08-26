@@ -1,17 +1,17 @@
 #ifndef			FT_MAP_HPP
 # define		FT_MAP_HPP
 
-// # include "../pair/pair.hpp"
+# include <functional> // less
+# include <memory> // allocator
+
 # include "../pair/make_pair.hpp"	// includes pair.hpp
 # include "../other/iterator_traits.hpp"
 # include "../other/reverse_iterator.hpp"
-# include <functional> // less
-# include <memory> // allocator
-# include "map_base.hpp"
-# include "bidirectional_iterator_map.hpp"
 # include "../other/equal.hpp"
 # include "../other/lexicographical_compare.hpp"
 # include "../vector/vector.hpp"
+# include "bidirectional_iterator_map.hpp"
+# include "map_base.hpp"
 
 namespace ft {
 
@@ -39,7 +39,7 @@ namespace ft {
 			typedef typename	ft::map_iterator<node_type, const_value_type>	const_iterator;
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-			// typedef typename	iterator_traits<iterator>::difference_type	difference_type;
+			typedef 			ptrdiff_t									difference_type;
 			typedef				size_t										size_type;
 			typedef	typename	Alloc::template rebind< base_map >::other	allocator_tree;
 
@@ -67,11 +67,6 @@ namespace ft {
 			size_type					_size;
 
 		public:
-			void print()
-			{
-				_base_map->print();
-			}
-
 			// [ CONSTRUCTORS ]
 			// empty (1)
 			explicit map (const key_compare& comp = key_compare(),
@@ -79,7 +74,6 @@ namespace ft {
 						: _alloc_tree(allocator_tree()), _alloc_type(alloc), _comp_func(comp), _size(0)
 						{
 							_base_map = _alloc_tree.allocate(1);
-							// std::cout << "Alloc 7 " << _base_map << std::endl;
 							_alloc_tree.construct(_base_map, base_map());
 						}
 			// range (2)
@@ -90,7 +84,6 @@ namespace ft {
 				: _alloc_tree(allocator_tree()), _alloc_type(alloc), _base_map(NULL), _comp_func(comp), _size(0)
 				{
 					_base_map = _alloc_tree.allocate(1);
-					// std::cout << "Alloc 8 " << _base_map << std::endl;
 					_alloc_tree.construct(_base_map, base_map());
 					while (first != last)
 					{
@@ -103,7 +96,6 @@ namespace ft {
 			: _alloc_tree(allocator_tree()), _alloc_type(allocator_type()), _base_map(NULL), _comp_func(key_compare()), _size(0)
 			{
 				_base_map = _alloc_tree.allocate(1);
-				// std::cout << "Alloc 9 " << _base_map << std::endl;
 				_alloc_tree.construct(_base_map, base_map());
 
 				_comp_func = x._comp_func;
@@ -121,7 +113,6 @@ namespace ft {
 			~map()
 			{
 				clear();
-				// std::cout << "Freed 7 " << _base_map << std::endl;
 				_alloc_tree.destroy(_base_map);
 				_alloc_tree.deallocate(_base_map, 1);
 			}
@@ -408,7 +399,6 @@ namespace ft {
 		x.swap(y);
 	}
 
-
 	template <class Key, class T, class Compare, class Alloc>
 	bool	operator == (const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 	{
@@ -444,8 +434,6 @@ namespace ft {
 	{
 		return (!(lhs > rhs));
 	}
-
-
 
 };
 

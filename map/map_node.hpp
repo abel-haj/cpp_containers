@@ -1,12 +1,10 @@
 #ifndef		FT_AVL_NODE_HPP
 # define	FT_AVL_NODE_HPP
 
+// allocator
 # include <memory>
 
 # include "../pair/pair.hpp"
-#include <execinfo.h>
-#include <iostream>
-#include<unistd.h>
 
 namespace ft {
 
@@ -14,9 +12,13 @@ namespace ft {
 	class Avl_Node {
 
 		private:
-			typedef T					data_type;
-			typename std::allocator< Avl_Node<data_type> >::template rebind< Avl_Node<data_type> >::other	_alloc_node;
-			typename std::allocator< Avl_Node<data_type> >::template rebind< data_type >::other				_alloc;
+			typedef				T														data_type;
+			typedef				std::allocator< Avl_Node<data_type> >					Alloc;
+			typedef	typename	Alloc::template rebind< data_type >::other				allocator_type;
+			typedef	typename	Alloc::template rebind< Avl_Node<data_type> >::other	allocator_node;
+
+			allocator_node			_alloc_node;
+			allocator_type			_alloc;
 
 		public:
 			Avl_Node *				parent;
@@ -24,8 +26,6 @@ namespace ft {
 			Avl_Node *				left;
 			data_type *				current;
 			size_t					height;
-			//              ft::pair<const int, int> *
-			// ft::Avl_Node<ft::pair<const int, int> > *
 
 			// Default Constructor
 			Avl_Node() : parent(NULL), right(NULL), left(NULL), current(NULL), height(1) {}
@@ -35,7 +35,6 @@ namespace ft {
 			{
 				if (current)
 				{
-					// std::cout << "Freed 8 " << current << std::endl;
 					_alloc.destroy(current);
 					_alloc.deallocate(current, 1);
 					current = NULL;
@@ -52,7 +51,6 @@ namespace ft {
 			Avl_Node(const data_type & p) : parent(NULL), right(NULL), left(NULL), height(1)
 			{
 				current = _alloc.allocate(1);
-				// std::cout << "Alloc11 " << current << std::endl;
 				_alloc.construct(current, ft::make_pair(p.first, p.second));
 			}
 
@@ -61,7 +59,6 @@ namespace ft {
 			{
 				if (current)
 				{
-					// std::cout << "Freed 9 " << current << std::endl;
 					_alloc.destroy(current);
 					_alloc.deallocate(current, 1);
 				}
@@ -71,11 +68,21 @@ namespace ft {
 				if (x.current)
 				{
 					current = _alloc.allocate(1);
-					// std::cout << "Alloc10 " << current << std::endl;
 					_alloc.construct(current, ft::make_pair(x.current->first, x.current->second));
 				}
 				height = x.height;
 				return *this;
+			}
+
+			void copy_current(const data_type * c)
+			{
+				if (current)
+				{
+					_alloc.destroy(current);
+					_alloc.deallocate(current, 1);
+				}
+				current = _alloc.allocate(1);
+				_alloc.construct(current, ft::make_pair(c->first, c->second));
 			}
 	};
 

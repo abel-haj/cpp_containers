@@ -1,7 +1,6 @@
 #ifndef			REVERSE_ITERATOR_VECTOR_HPP
 # define		REVERSE_ITERATOR_VECTOR_HPP
 
-// # include <cstddef>
 # include "../other/iterator_traits.hpp"
 
 namespace ft {

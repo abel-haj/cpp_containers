@@ -1,13 +1,12 @@
 #ifndef			FT_BASE_MAP_HPP
 # define		FT_BASE_MAP_HPP
 
-// # include "../pair/pair.hpp"
-# include "../pair/make_pair.hpp"	// includes pair.hpp
-# include "../other/iterator_traits.hpp"
 # include <functional> // less
 # include <memory> // allocator
-# include <iostream> // cout
 # include <algorithm> // max
+
+# include "../pair/make_pair.hpp"	// includes pair.hpp
+# include "../other/iterator_traits.hpp"
 # include "map_node.hpp"
 
 namespace ft {
@@ -37,23 +36,18 @@ namespace ft {
 		public:
 			avl_tree () : _top(NULL), _comp_func(key_compare())
 			{
-				// std::cout << "AVL DEFAULT CONSTRUCTOR" << std::endl;
 				_last = _alloc_node.allocate(1);
-				// std::cout << "Alloc 1 " << _last << std::endl;
 			}
 			avl_tree (const avl_tree &a)
 			{
-				// std::cout << "AVL COPY CONSTRUCTOR" << std::endl;
 				_top = NULL;
 				_last = NULL;
 				_comp_func = a._comp_func;
 				_last = _alloc_node.allocate(1);
-				// std::cout << "Alloc 2 " << _last << std::endl;
 				copy(a._top);
 			}
 			avl_tree & operator= (const avl_tree & t)
 			{
-				// std::cout << "AVL ASSIGNMENT OPERATOR" << std::endl;
 				// delete
 				if (_top)
 				{
@@ -62,7 +56,6 @@ namespace ft {
 				// delete
 				if (_last)
 				{
-					// std::cout << "Freed 1 " << _last << std::endl;
 					_alloc_node.deallocate(_last, 1); // no destroy // was not constructed
 					_last = NULL;
 				}
@@ -71,31 +64,23 @@ namespace ft {
 				if (t._last)
 				{
 					_last = _alloc_node.allocate(1);
-					// std::cout << "Alloc 3 " << _last << std::endl;
 					_alloc_node.construct(_last, node_type(*t._last));
 				}
 				// copy
 				if (t._top)
 				{
 					_top = _alloc_node.allocate(1);
-					// std::cout << "Alloc 4 " << _top << std::endl;
 					_alloc_node.construct(_top, node_type(*t._top));
 					copy_tree(_top->right, t._top->right);
 					copy_tree(_top->left, t._top->left);
 				}
 
-				// copy_tree(_top, t._top);
-
 				return *this;
 			}
 			~avl_tree ()
 			{
-				// if (_top)
-				// 	delete_tree(_top);
 				if (_last)
 				{
-					// std::cout << "Freed 2 " << _last << std::endl;
-					// _alloc_node.destroy(_last);
 					_alloc_node.deallocate(_last, 1); // no destroy // was not constructed
 					_last = NULL;
 				}
@@ -111,14 +96,6 @@ namespace ft {
 				}
 			}
 
-			void print()
-			{
-				std::cout << std::endl;
-				std::cout << "------------" << std::endl;
-
-				printBT("", _top, false);
-				check_balance(_top);
-			}
 			size_type erase (const key_type& k)
 			{
 				size_type ret = erase_wrap(_top, k);
@@ -177,7 +154,6 @@ namespace ft {
 				if (c)
 				{
 					t = _alloc_node.allocate(1);
-					// std::cout << "Alloc 5 " << t << std::endl;
 					_alloc_node.construct(t, node_type(*c));
 					copy_tree(t->right, c->right);
 					copy_tree(t->left, c->left);
@@ -191,7 +167,6 @@ namespace ft {
 				if (pos->right)
 					delete_tree(pos->right);
 
-				// std::cout << "Freed 3 " << pos << std::endl;
 				_alloc_node.destroy(pos);
 				_alloc_node.deallocate(pos, 1);
 				pos = NULL;
@@ -217,7 +192,6 @@ namespace ft {
 
 						if ( pos->left == NULL && pos->right == NULL )
 						{
-							// std::cout << "Freed 4 " << pos << std::endl;
 							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
 							pos = NULL;
@@ -230,7 +204,6 @@ namespace ft {
 							node_type * tmp = pos->right;
 							node_type * tmp_p = pos->parent;
 
-							// std::cout << "Freed 5 " << pos << std::endl;
 							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
 							pos = NULL;
@@ -245,7 +218,6 @@ namespace ft {
 							node_type * tmp = pos->left;
 							node_type * tmp_p = pos->parent;
 
-							// std::cout << "Freed 6 " << pos << std::endl;
 							_alloc_node.destroy(pos);
 							_alloc_node.deallocate(pos, 1);
 							pos = NULL;
@@ -257,16 +229,8 @@ namespace ft {
 						else
 						{
 							node_type * tmp = deepest_left(pos->right);
-							node_type * tmp_l = pos->left;
-							node_type * tmp_r = pos->right;
-							node_type * tmp_p = pos->parent;
 
-							// _alloc_node.construct(pos, *tmp);
-							pos = tmp;
-							pos->parent = tmp_p;
-							pos->left = tmp_l;
-							if (tmp != tmp_r)
-							pos->right = tmp_r;
+							pos->copy_current(tmp->current);
 
 							ret = erase_wrap(pos->right, tmp->current->first);
 						}
@@ -311,7 +275,6 @@ namespace ft {
 				if ( pos == NULL )
 				{
 					pos = _alloc_node.allocate(1);
-					// std::cout << "Alloc 6 " << pos << std::endl;
 					_alloc_node.construct(pos, val);
 					pos->parent = p;
 					return true;
@@ -361,7 +324,6 @@ namespace ft {
 
 			node_type * right_rotation(node_type * y)
 			{
-				// std::cout << "RIGHT ROTATION" << std::endl;
 				node_type * x = y->left;
 				node_type * T2 = x->right;
 
@@ -380,7 +342,6 @@ namespace ft {
 
 			node_type * left_rotation(node_type * x)
 			{
-				// std::cout << "LEFT ROTATION" << std::endl;
 				node_type * y = x->right;
 				node_type * T2 = y->left;
 
@@ -436,69 +397,6 @@ namespace ft {
 				if (n)
 					return get_height(n->left) - get_height(n->right);
 				return 0;
-			}
-
-			void printBT(const std::string& prefix, const node_type* node, bool isLeft)
-			{
-				if( node != NULL )
-				{
-					std::cout << prefix;
-
-					std::cout << (isLeft ? "├──" : "└──" );
-
-					// print the value of the node
-					std::cout << node->height << " : "
-					<< "[" << node->current->first
-					<< ":" << node->current->second
-					<< "]"
-					// << " p " << node->parent
-					// << " l " << node->left
-					// << " r " << node->right
-					<< std::endl;
-
-					// enter the next tree level - left and right branch
-					printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
-					printBT( prefix + (isLeft ? "│   " : "    "), node->right, false);
-				}
-			}
-
-			template<class F>
-			int calheight(F *p)
-			{
-				if (p == NULL)
-					return (1);
-				if(p->left && p->right)
-				{
-					if (p->left->height < p->right->height)
-					return p->right->height + 1;
-					else
-					return  p->left->height + 1;
-				}
-				else if(p->right == NULL && p->left)
-				{
-					return p->left->height + 1;
-				}
-				else if(p->left ==NULL && p->right)
-				{
-					return p->right->height + 1;
-				}
-				return 1;
-			}
-			template<class F>
-			void check_balance(F *s)
-			{
-				if (s == nullptr)
-					return ;
-				if (s->right)
-					check_balance(s->right);
-				if (s->left)
-					check_balance(s->left);
-				int bal = calheight(s->left) - calheight(s->right);
-				if (bal >= 2 || bal <= -2)
-				{
-					std::cout << "KO: " << " unbalanced tree at node " << s->current->first << "\n";
-					return ;
-				}
 			}
 
 	};
