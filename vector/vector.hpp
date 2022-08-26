@@ -1,7 +1,6 @@
 #ifndef		VECTOR_HPP
 # define	VECTOR_HPP
 
-// # include <iostream>
 // ptrdiff_t
 # include <cstddef>
 // allocator
@@ -18,10 +17,6 @@
 # include "../other/is_integral.hpp"
 # include "../other/equal.hpp"
 # include "../other/lexicographical_compare.hpp"
-
-#ifndef OUT
-	#define OUT 0
-#endif
 
 namespace ft {
 
@@ -57,8 +52,6 @@ namespace ft {
 			 */
 			explicit vector (const allocator_type& alloc = allocator_type()) : _capacity(0), _total(0)
 			{
-				if (OUT)
-					std::cout << "VECTOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 				_vec = _alloc_type.allocate(_capacity);
 			}
@@ -73,15 +66,11 @@ namespace ft {
 			vector (size_type n, const value_type& val = value_type(),
 					const allocator_type& alloc = allocator_type()) : _capacity(n), _total(0)
 			{
-				if (OUT)
-					std::cout << "VECTOR FILL CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 				_vec = _alloc_type.allocate(n);
 				for (size_type i = 0; i < _capacity; i++)
 				{
 					_alloc_type.construct(_vec + i, val);
-					if (OUT)
-						std::cout << "ASSIGNING " << val << std::endl;
 					_total++;
 				}
 			}
@@ -100,8 +89,6 @@ namespace ft {
 					const allocator_type& alloc = allocator_type())
 					: _capacity(0), _total(0)
 			{
-				if (OUT)
-					std::cout << "VECTOR RANGE CONSTRUCTOR CALLED" << std::endl;
 				_alloc_type = alloc;
 
 				size_type	new_capacity;
@@ -127,9 +114,6 @@ namespace ft {
 			 */
 			vector (const vector& x) : _capacity(0), _total(0)
 			{
-				if (OUT)
-					std::cout << "VECTOR COPY CONSTRUCTOR CALLED" << std::endl;
-
 				// allocate
 				_vec = _alloc_type.allocate(x._capacity);
 				_capacity = x._capacity;
@@ -149,9 +133,6 @@ namespace ft {
 			 */
 			~vector(void)
 			{
-				if (OUT)
-					std::cout << "VECTOR DESTRUCTOR CALLED" << std::endl;
-
 				for (size_type i=0; i<_total; i++)
 					_alloc_type.destroy(_vec + i);
 
@@ -169,9 +150,6 @@ namespace ft {
 			 */
 			vector& operator= (const vector& x)
 			{
-				if (OUT)
-					std::cout << "VECTOR COPY ASSIGNMENNT CALLED" << std::endl;
-
 				// destroy
 				for (size_type i=0; i<_total; i++)
 					_alloc_type.destroy(_vec + i);
@@ -340,15 +318,11 @@ namespace ft {
 			//													//
 			reference operator[] (size_type n)
 			{
-				if (OUT)
-					std::cout << "ACCESSING INDEX " << n << std::endl;
 				return _vec[n];
 			}
 
 			const_reference operator[] (size_type n) const
 			{
-				if (OUT)
-					std::cout << "ACCESSING INDEX " << n << "(const)" << std::endl;
 				return _vec[n];
 			}
 

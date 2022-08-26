@@ -3,12 +3,7 @@
 
 // ptrdiff_t
 # include <cstddef>
-// # include <iostream>
 # include "../other/iterator_traits.hpp"
-
-#ifndef OUT
-	#define OUT 0
-#endif
 
 namespace ft {
 
@@ -29,8 +24,6 @@ namespace ft {
 			// default
 			vector_iterator(void)
 			{
-				if (OUT)
-					std::cout << "RNDM ITERATOR DEFAULT CONSTRUCTOR CALLED" << std::endl;
 				my_iterator = NULL;
 			}
 
@@ -43,22 +36,16 @@ namespace ft {
 			template <class Iter>
 			vector_iterator(const vector_iterator<Iter> & ri)
 			{
-				if (OUT)
-					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
 				my_iterator = ri.base();
 			}
 			vector_iterator(const vector_iterator & ri)
 			{
-				if (OUT)
-					std::cout << "RNDM ITERATOR COPY CONSTRUCTOR CALLED" << std::endl;
 				my_iterator = ri.base();
 			}
 
 			// copy assign
 			vector_iterator operator=(const vector_iterator & rhs)
 			{
-				if (OUT)
-					std::cout << "RNDM ITERATOR ASSIGNMENT OPERATOR CALLED" << std::endl;
 				my_iterator = rhs.base();
 
 				return *this;
@@ -66,10 +53,7 @@ namespace ft {
 
 			// destruct
 			~vector_iterator()
-			{
-				if (OUT)
-					std::cout << "RNDM ITERATOR DESTRUCTOR CALLED" << std::endl;
-			}
+			{}
 
 			pointer base() const
 			{
