@@ -5,7 +5,6 @@
 # include <memory> // allocator
 
 # include "../pair/make_pair.hpp"	// includes pair.hpp
-# include "../other/iterator_traits.hpp"
 # include "../other/reverse_iterator.hpp"
 # include "../other/equal.hpp"
 # include "../other/lexicographical_compare.hpp"
@@ -41,7 +40,6 @@ namespace ft {
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			typedef 			ptrdiff_t									difference_type;
 			typedef				size_t										size_type;
-			typedef	typename	Alloc::template rebind< base_map >::other	allocator_tree;
 
 			class value_compare
 			{
@@ -60,6 +58,7 @@ namespace ft {
 			};
 
 		private:
+			typedef	typename	Alloc::template rebind< base_map >::other	allocator_tree;
 			allocator_tree				_alloc_tree;
 			allocator_type				_alloc_type;
 			base_map *					_base_map;
